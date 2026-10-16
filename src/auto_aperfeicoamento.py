@@ -40,9 +40,9 @@ class SelfImprover:
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
     def create_backup(self) -> Path:
-        """Gera uma cópia de segurança com carimbo de data/hora do dataset intents.json."""
+        """Gera uma cópia de segurança com carimbo de data/hora do dataset intencoes.json."""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        backup_file = self.backup_dir / f"intents_backup_{timestamp}.json"
+        backup_file = self.backup_dir / f"intencoes_backup_{timestamp}.json"
         shutil.copy2(self.intents_path, backup_file)
         return backup_file
 
@@ -118,7 +118,7 @@ class SelfImprover:
             with open(self.intents_path, mode="r", encoding="utf-8") as f:
                 dataset = json.load(f)
         except Exception as e:
-            return False, f"Erro ao ler intents.json: {e}"
+            return False, f"Erro ao ler intencoes.json: {e}"
 
         # 3. Localiza a intenção e insere a nova frase
         intent_found = False
@@ -140,7 +140,7 @@ class SelfImprover:
                 json.dump(dataset, f, ensure_ascii=False, indent=2)
                 f.flush()
         except Exception as e:
-            return False, f"Erro ao salvar intents.json atualizado: {e}"
+            return False, f"Erro ao salvar intencoes.json atualizado: {e}"
 
         # 5. Marca mensagem no log como revisada
         if interaction_id:

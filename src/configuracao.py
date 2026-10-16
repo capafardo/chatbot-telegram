@@ -27,8 +27,8 @@ except ImportError:
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 DATA_DIR: Path = BASE_DIR / "data"
-INTENTS_FILE: Path = DATA_DIR / "intents.json"
-SLANG_FILE: Path = DATA_DIR / "slang_dict.json"
+INTENTS_FILE: Path = DATA_DIR / "intencoes.json"
+SLANG_FILE: Path = DATA_DIR / "dicionario_girias.json"
 BACKUP_DIR: Path = DATA_DIR / "backups"
 
 LOGS_DIR: Path = BASE_DIR / "logs"

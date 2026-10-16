@@ -14,7 +14,7 @@
 Este projeto consiste em um **Chatbot Tutor Educacional** desenvolvido em Python para apoiar os estudantes nas 10 aulas do plano de ensino da disciplina. O assistente funciona como um "espelho prático" de toda a ementa do curso:
 
 * **Sem Grandes Modelos de Linguagem (Sem LLMs):** Opera com modelos clássicos de Machine Learning supervisionado (Scikit-Learn), permitindo que os estudantes compreendam o funcionamento matemático real de cada etapa.
-* **Dataset Externo Desacoplado:** Base de conhecimento em formato JSON (`data/intents.json`), separada do código-fonte.
+* **Dataset Externo Desacoplado:** Base de conhecimento em formato JSON (`data/intencoes.json`), separada do código-fonte.
 * **Vetorização Numérica:** Extração de características textuais com `TF-IDF` (unigramas e bigramas).
 * **Classificação e Fallback:** Regressão Logística e Naive Bayes Multinomial com cálculo de probabilidade e mecanismo de Fallback quando a confiança for inferior ao limiar.
 * **Modo `/debug` Didático:** Permite ao aluno visualizar o "raio-X" do pipeline de PLN (normalização, gírias, regex, tokens, stopwords com preservação de negação, radicalização e pesos TF-IDF).
@@ -148,8 +148,8 @@ chatbot-telegram/
 ├── requirements.txt             # Dependências Python
 ├── main.py                      # Ponto de entrada com flags de execução
 ├── data/
-│   ├── intents.json             # Dataset de intenções e respostas da disciplina
-│   ├── slang_dict.json          # Dicionário de gírias e abreviações da internet
+│   ├── intencoes.json           # Dataset de intenções e respostas da disciplina
+│   ├── dicionario_girias.json   # Dicionário de gírias e abreviações da internet
 │   └── backups/                 # Cópias de segurança criadas antes de retreinos
 ├── logs/
 │   └── .gitkeep                 # Armazena conversas anonimizadas (conversas.jsonl/.csv)
