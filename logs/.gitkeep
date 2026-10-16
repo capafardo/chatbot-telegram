@@ -1,0 +1,2 @@
+# Este arquivo garante que a pasta logs/ seja mantida no versionamento Git
+# enquanto os arquivos de logs de conversas (.jsonl e .csv) são ignorados pelo .gitignore.

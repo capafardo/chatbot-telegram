@@ -1,0 +1,1 @@
+# Mantém a pasta de backups no Git enquanto os arquivos de backup gerados pelo /regenerar são ignorados.

@@ -1,0 +1,36 @@
+# Instruções do projeto / arquivos a ignorar
+descricao.txt
+CONTEND.md
+ignorar/
+
+# Variáveis de ambiente e segredos
+.env
+*.env
+
+# Ambientes virtuais
+venv/
+.venv/
+env/
+ENV/
+
+# Caches e compilação Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Logs gerados em execução
+logs/*.jsonl
+logs/*.csv
+!logs/.gitkeep
+
+# Backups dinâmicos gerados pelo /regenerar
+data/backups/*.json
+!data/backups/.gitkeep
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
