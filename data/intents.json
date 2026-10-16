@@ -1,0 +1,437 @@
+{
+  "metadata": {
+    "instituicao": "CETAM - Centro de Educação Tecnológica do Amazonas",
+    "unidade": "UDE - Unidade Descentralizada de Ensino",
+    "escola": "IBC - Instituto Benjamin Constant (Manaus/AM)",
+    "curso": "Técnico de Nível Médio em Inteligência Artificial",
+    "eixo_tecnologico": "Informação e Comunicação",
+    "componente_curricular": "Processamento de Linguagem Natural (PLN) Chatbots",
+    "carga_horaria": "40H",
+    "periodo": "05/10/2026 a 19/10/2026",
+    "dias_semana": "Segunda a Sexta-feira",
+    "horario": "Matutino (1º ao 4º tempo de aula)",
+    "docente": "Prof. Agnaldo Marcelo Pereira Fournier",
+    "versao_dataset": "1.0.0"
+  },
+  "intents": [
+    {
+      "tag": "saudacao",
+      "categoria": "institucional",
+      "descricao": "Cumprimentos e início de conversa",
+      "patterns": [
+        "Olá",
+        "Oi",
+        "Oi, tudo bem?",
+        "Bom dia",
+        "Boa tarde",
+        "Boa noite",
+        "Tem alguém aí?",
+        "E aí, beleza?",
+        "Fala aí",
+        "Opa, e aí?"
+      ],
+      "responses": [
+        "Olá! Sou o assistente tutor da disciplina de PLN e Chatbots do CETAM/IBC. Como posso te ajudar nos seus estudos hoje?",
+        "Oi! Tudo ótimo por aqui. Estou pronto para tirar suas dúvidas sobre Processamento de Linguagem Natural e a nossa disciplina. Do que você precisa?",
+        "Olá! Seja bem-vindo ao tutor de PLN. Pode perguntar sobre as aulas, conceitos de IA, critérios de avaliação ou sobre o projeto do curso!"
+      ]
+    },
+    {
+      "tag": "despedida",
+      "categoria": "institucional",
+      "descricao": "Encerramento da interação",
+      "patterns": [
+        "Tchau",
+        "Até mais",
+        "Até logo",
+        "Muito obrigado pela ajuda",
+        "Valeu prof, até amanhã",
+        "Tchau tchau",
+        "Encerrar conversa",
+        "Obrigado, era só isso",
+        "Falou, até a próxima aula"
+      ],
+      "responses": [
+        "Até mais! Bons estudos e nos vemos na próxima aula no laboratório!",
+        "Tchau! Se tiver mais dúvidas sobre PLN, estarei por aqui. Sucesso nos códigos!",
+        "Por nada! Qualquer outra dúvida sobre a matéria ou o projeto integrador, é só me chamar. Até logo!"
+      ]
+    },
+    {
+      "tag": "ajuda_comandos",
+      "categoria": "institucional",
+      "descricao": "Guia de comandos e funcionalidades do chatbot",
+      "patterns": [
+        "O que você faz?",
+        "Como você funciona?",
+        "Quais são seus comandos?",
+        "Me ajuda",
+        "Como usar esse bot?",
+        "Comandos disponíveis",
+        "O que eu posso perguntar?",
+        "Menu de opções"
+      ],
+      "responses": [
+        "Eu sou o Tutor Educacional de PLN! Você pode me fazer perguntas em português simples sobre:\n1. Informações do curso, professor, notas e aulas do CETAM/IBC;\n2. Conceitos da matéria (Tokenização, TF-IDF, Regressão Logística, Naive Bayes, Métricas, etc.);\n\nComandos especiais:\n• /debug - Liga ou desliga a visualização do raio-X do pipeline de PLN da sua mensagem;\n• /metricas - Mostra a acurácia, F1-Score e a matriz de confusão do meu modelo;\n• /regenerar - (Administrador) Abre o ciclo supervisionado para eu aprender novas frases!"
+      ]
+    },
+    {
+      "tag": "instituicao_escola",
+      "categoria": "institucional",
+      "descricao": "Informações sobre o CETAM e a Escola IBC",
+      "patterns": [
+        "Qual é a instituição?",
+        "Onde fica a escola?",
+        "Qual o colégio do curso?",
+        "Me fala sobre o CETAM",
+        "O que significa IBC?",
+        "Qual a escola do curso técnico?",
+        "Em qual cidade fica a escola?",
+        "Onde acontecem as aulas?"
+      ],
+      "responses": [
+        "Este curso faz parte do CETAM (Centro de Educação Tecnológica do Amazonas), realizado na Unidade Descentralizada de Ensino (UDE) Escola IBC – Instituto Benjamin Constant, em Manaus/AM."
+      ]
+    },
+    {
+      "tag": "curso_info",
+      "categoria": "institucional",
+      "descricao": "Dados sobre o curso técnico de Inteligência Artificial",
+      "patterns": [
+        "Qual é o nome do curso?",
+        "Qual o curso dessa matéria?",
+        "Esse curso é de que área?",
+        "Qual é o eixo tecnológico?",
+        "Qual é o turno das aulas?",
+        "As aulas são online ou presenciais?",
+        "Qual é a turma do curso?"
+      ],
+      "responses": [
+        "Estamos no Curso Técnico de Nível Médio em Inteligência Artificial, pertencente ao Eixo Tecnológico de Informação e Comunicação. O formato é 100% presencial, turma 2026/1, no turno matutino (do 1º ao 4º tempo de aula)."
+      ]
+    },
+    {
+      "tag": "disciplina_info",
+      "categoria": "institucional",
+      "descricao": "Dados sobre o componente curricular de PLN e Chatbots",
+      "patterns": [
+        "Qual o nome da disciplina?",
+        "Quantas horas de aula tem essa matéria?",
+        "Qual a carga horária de PLN?",
+        "Quando começa e termina a disciplina?",
+        "Quais os dias de aula da matéria?",
+        "Qual o objetivo da disciplina?",
+        "O que vamos aprender nesse componente?"
+      ],
+      "responses": [
+        "A disciplina é 'Processamento de Linguagem Natural (PLN) Chatbots', com carga horária total de 40 horas. O período letivo vai de 05/10/2026 a 19/10/2026, com aulas de segunda a sexta-feira. O objetivo é desenvolver soluções introdutórias de PLN e chatbots práticos com responsabilidade ética no uso de dados."
+      ]
+    },
+    {
+      "tag": "professor_info",
+      "categoria": "institucional",
+      "descricao": "Identificação do docente responsável",
+      "patterns": [
+        "Quem é o professor da disciplina?",
+        "Qual o nome do docente?",
+        "Quem dá essa aula de chatbots?",
+        "Como se chama o prof?",
+        "Quem é o professor de PLN?",
+        "Quem está ministrando esse curso?"
+      ],
+      "responses": [
+        "O docente responsável pela disciplina de Processamento de Linguagem Natural e Chatbots é o Prof. Agnaldo Marcelo Pereira Fournier."
+      ]
+    },
+    {
+      "tag": "cronograma_aulas",
+      "categoria": "institucional",
+      "descricao": "Visão geral das 10 aulas do plano de ensino",
+      "patterns": [
+        "Como está dividido o cronograma das aulas?",
+        "Quantas aulas temos no curso?",
+        "O que vamos ver em cada aula?",
+        "Quais são as fases da disciplina?",
+        "Quantas horas de aula por dia?",
+        "Qual o cronograma do plano de ensino?"
+      ],
+      "responses": [
+        "A disciplina possui 10 aulas de 4 horas cada (totalizando 40h), organizadas em duas fases:\n• Fase 1 (Aulas 01 a 03): Introdução ao PLN, pré-processamento de texto (limpeza, gírias, regex, stopwords) e assistentes baseados em regras;\n• Fase 2 (Aulas 04 a 10): Vetorização (TF-IDF), modelos de Machine Learning (Naive Bayes e Regressão Logística), avaliação (AV1 no dia 09/10), integração com Telegram, LGPD e apresentação final do Projeto Integrador (AV2 no dia 19/10)."
+      ]
+    },
+    {
+      "tag": "avaliacoes_criterios",
+      "categoria": "institucional",
+      "descricao": "Critérios de avaliação, datas das provas e cálculo de média",
+      "patterns": [
+        "Como vou ser avaliado na disciplina?",
+        "Quando são as avaliações?",
+        "Qual a data da AV1?",
+        "Quando é a prova AV2?",
+        "Como calcula a média final?",
+        "Qual a nota mínima para passar?",
+        "Como funciona a recuperação?",
+        "Qual a frequência mínima para não reprovar por falta?"
+      ],
+      "responses": [
+        "Critérios de Aprovação do CETAM:\n1. Frequência mínima obrigatória: 75% da carga horária (mínimo de 30 horas presenciais);\n2. Média Parcial: MP = (AV1 + AV2) / 2. Se MP >= 6,0 e presença >= 75%, está APROVADO direto;\n3. Datas das avaliações:\n   • AV1 (10,0 pts): 09/10/2026 (Aula 05) - Desenvolvimento de pipeline de PLN em laboratório;\n   • AV2 (10,0 pts): 19/10/2026 (Aula 10) - Apresentação prática do Projeto Integrador com Telegram e LGPD;\n4. Se MP < 6,0, há a Recuperação Final (REC) no dia 19/10: MF = (MP + REC) / 2. A média final deve ser >= 6,0."
+      ]
+    },
+    {
+      "tag": "projeto_integrador",
+      "categoria": "institucional",
+      "descricao": "Explicação do Projeto Integrador obrigatório (PBL)",
+      "patterns": [
+        "O que é o projeto integrador?",
+        "Como é o trabalho final da matéria?",
+        "O que temos que entregar na AV2?",
+        "O que é o miniassistente especializado?",
+        "Quais os nichos do projeto integrador?",
+        "O trabalho é em grupo ou individual?"
+      ],
+      "responses": [
+        "O Projeto Integrador é a prática principal da disciplina, feito em equipes (PBL). Cada equipe escolhe um nicho de atendimento real (ex: suporte técnico, guia do curso, agendamento de laboratório) e desenvolve um miniassistente que evolui de regras simples até Machine Learning com integração no Telegram, logs anonimizados e código no Git para demonstrar na Aula 10 (AV2)."
+      ]
+    },
+    {
+      "tag": "referencias_bibliograficas",
+      "categoria": "institucional",
+      "descricao": "Livros e materiais de estudo recomendados",
+      "patterns": [
+        "Quais são os livros da disciplina?",
+        "Qual a bibliografia básica?",
+        "O que o professor recomenda ler?",
+        "Onde posso estudar mais sobre chatbots?",
+        "Quais autores foram indicados no plano de aula?"
+      ],
+      "responses": [
+        "Bibliografia Básica do Plano de Ensino:\n1. CRUZ, Leôncio T. et al. Assistentes Virtuais Inteligentes e Chatbots. Brasport, 2019;\n2. RAJ, Sumit. Construindo Chatbots com Python. Novatec, 2019;\n3. VAJJALA, Sowmya et al. Practical Natural Language Processing. O'Reilly, 2020.\nAlém das documentações oficiais do Scikit-Learn, NLTK, spaCy e Rasa."
+      ]
+    },
+    {
+      "tag": "conceito_pln_historico",
+      "categoria": "tecnica",
+      "descricao": "Conceito de PLN, histórico, limitações e riscos (Aula 01)",
+      "patterns": [
+        "O que é Processamento de Linguagem Natural?",
+        "O que é PLN?",
+        "O que faz a área de NLP?",
+        "Como o computador entende o que a gente escreve?",
+        "Qual o histórico do PLN?",
+        "Quais as limitações do processamento de linguagem natural?",
+        "O que é um chatbot?"
+      ],
+      "responses": [
+        "Processamento de Linguagem Natural (PLN ou NLP em inglês) é o ramo da Inteligência Artificial que ensina os computadores a ler, interpretar, processar e responder à linguagem humana de maneira útil. No início usavam-se apenas regras rígidas (como o famoso bot ELIZA de 1966). Hoje usamos estatística e Machine Learning. A principal limitação é que computadores não têm bom senso: eles trabalham com padrões probabilísticos e podem errar com ironias ou ambiguidades."
+      ]
+    },
+    {
+      "tag": "pipeline_pln",
+      "categoria": "tecnica",
+      "descricao": "As etapas sequenciais de um pipeline de PLN (Aula 01)",
+      "patterns": [
+        "O que é um pipeline de PLN?",
+        "Quais são as etapas de um pipeline de linguagem?",
+        "Como funciona o fluxo de processamento de texto?",
+        "Quais os passos para processar uma frase?",
+        "O que acontece com a mensagem antes do robô responder?"
+      ],
+      "responses": [
+        "Um pipeline de PLN é uma esteira de passos organizados: 1) Entrada do texto bruto digitado pelo usuário; 2) Pré-processamento (letras minúsculas, limpeza de gírias, pontuações e stopwords); 3) Representação numérica (vetorização como TF-IDF); 4) Classificação pelo algoritmo de Machine Learning; 5) Seleção da resposta adequada ou acionamento do Fallback caso a certeza seja baixa."
+      ]
+    },
+    {
+      "tag": "preprocessamento_ruido",
+      "categoria": "tecnica",
+      "descricao": "Normalização, limpeza e ruído textual (Aula 02)",
+      "patterns": [
+        "O que é pré-processamento de texto?",
+        "Por que precisamos limpar o texto?",
+        "O que é ruído textual?",
+        "Como lidar com gírias e abreviações da internet?",
+        "Por que deixar tudo em minúsculas?",
+        "O que faz a normalização de texto?"
+      ],
+      "responses": [
+        "As pessoas escrevem na internet com gírias, abreviações (ex: 'vc', 'pq', 'blz'), erros e letras maiúsculas misturadas. Para o computador, 'Olá', 'olá' e 'OLÁ' seriam palavras totalmente diferentes se não fizéssemos a normalização! O pré-processamento padroniza tudo (letras minúsculas, expansão de gírias e remoção de pontuação inútil) para facilitar o trabalho dos modelos matemáticos."
+      ]
+    },
+    {
+      "tag": "tokenizacao_stopwords",
+      "categoria": "tecnica",
+      "descricao": "Tokenização e remoção seletiva de stopwords (Aula 02)",
+      "patterns": [
+        "O que é tokenização?",
+        "O que são tokens?",
+        "O que são stopwords?",
+        "Por que tiramos as stopwords?",
+        "Palavras como não e nunca são stopwords?",
+        "Como separar o texto em palavras?"
+      ],
+      "responses": [
+        "• Tokenização: é o ato de picar o texto em pequenos pedacinhos chamados 'tokens' (geralmente palavras avulsas ou pontuações);\n• Stopwords: são palavras muito comuns de ligação (como 'de', 'a', 'o', 'com', 'para') que aparecem em quase todas as frases e trazem pouco conteúdo semântico. Nós removemos essas palavras para economizar memória, mas com MUITO cuidado para NÃO remover palavras de negação (como 'não' ou 'nunca'), pois elas invertem o sentido da dúvida!"
+      ]
+    },
+    {
+      "tag": "stemming_lemmatizacao",
+      "categoria": "tecnica",
+      "descricao": "Diferença entre radicalização (Stemming) e lematização (Aula 03)",
+      "patterns": [
+        "Qual a diferença entre Stemming e Lematização?",
+        "O que é Stemming?",
+        "O que é Lematização?",
+        "O que é radical de uma palavra em PLN?",
+        "Quando usar stemming e quando usar lemmatization?",
+        "Como reduzir palavras ao radical?"
+      ],
+      "responses": [
+        "Ambas servem para agrupar formas diferentes da mesma palavra:\n• Stemming (Radicalização): corta o final da palavra de forma rápida por regras automáticas até sobrar o radical. Exemplo: 'estudando', 'estudante' e 'estudiosos' viram 'estud'. É rápido, mas às vezes o radical não é uma palavra real do dicionário;\n• Lematização (Lemmatization): usa análise gramatical e dicionário para encontrar a forma canônica da palavra (o lema). Exemplo: 'fui' e 'éramos' viram o verbo 'ser'. É mais preciso e elegante, porém exige mais processamento."
+      ]
+    },
+    {
+      "tag": "expressoes_regulares",
+      "categoria": "tecnica",
+      "descricao": "Expressões regulares (Regex) em PLN (Aulas 03 e 07)",
+      "patterns": [
+        "O que é Regex?",
+        "Para que servem as expressões regulares?",
+        "Como usar o módulo re do Python?",
+        "Como encontrar datas e números com regex?",
+        "Como limpar texto com expressões regulares?",
+        "Regex em chatbots"
+      ],
+      "responses": [
+        "Expressões Regulares (Regex) são fórmulas especiais para encontrar ou substituir padrões de texto. Em chatbots, usamos Regex para:\n1. Identificar dados estruturados como CPF, telefone, e-mails ou datas;\n2. Limpar pontuações, caracteres estranhos e múltiplos espaços;\n3. Anonimizar informações sensíveis nos logs para respeitar a privacidade dos usuários."
+      ]
+    },
+    {
+      "tag": "representacao_bow_ngrams",
+      "categoria": "tecnica",
+      "descricao": "Bag of Words e N-Grams (Aula 04)",
+      "patterns": [
+        "O que é Bag of Words?",
+        "O que significa BoW?",
+        "O que são n-grams?",
+        "O que é bigrama e unigrama?",
+        "Como transformar texto em tabela de números?",
+        "Para que serve o Bag of Words em chatbots?"
+      ],
+      "responses": [
+        "Modelos de Machine Learning só entendem números, não texto direto!\n• Bag of Words (Saco de Palavras): conta quantas vezes cada palavra do vocabulário aparece na frase, gerando uma lista de números. O ponto fraco é que ele perde a ordem das palavras;\n• N-Grams: para não perder o contexto, agrupamos as palavras vizinhas. Unigramas são palavras sozinhas ('bom'), Bigramas são pares ('não gostei') e Trigramas são trios ('muito bom dia'). Isso ajuda o modelo a entender o contexto da negação!"
+      ]
+    },
+    {
+      "tag": "representacao_tfidf_embeddings",
+      "categoria": "tecnica",
+      "descricao": "TF-IDF e introdução a Embeddings (Aula 04)",
+      "patterns": [
+        "O que é TF-IDF?",
+        "Para que serve o TF-IDF?",
+        "Como o TF-IDF calcula a importância de uma palavra?",
+        "O que significa Term Frequency Inverse Document Frequency?",
+        "Qual a diferença entre BoW e TF-IDF?",
+        "O que são Embeddings?"
+      ],
+      "responses": [
+        "O TF-IDF resolve o maior defeito do Bag of Words simples! Ele não apenas conta a frequência da palavra na frase (TF - Term Frequency), mas penaliza as palavras que aparecem em quase todos os documentos da base (IDF - Inverse Document Frequency). Assim, uma palavra rara e específica (como 'matrícula' ou 'reprovação') ganha um peso numérico muito mais alto do que palavras comuns. Já os Embeddings são vetores densos mais avançados que colocam palavras com significados semelhantes próximas no espaço geométrico."
+      ]
+    },
+    {
+      "tag": "modelos_classicos_ml",
+      "categoria": "tecnica",
+      "descricao": "Modelos clássicos supervisionados: Naive Bayes, Regressão Logística e SVM (Aula 05)",
+      "patterns": [
+        "Como funciona a classificação de intenções?",
+        "O que é Naive Bayes para texto?",
+        "O que é Regressão Logística em PLN?",
+        "O que é SVM para classificação textual?",
+        "Como ensinar o algoritmo a descobrir a intenção?",
+        "Qual o melhor modelo clássico para chatbots?"
+      ],
+      "responses": [
+        "Na classificação de intenções supervisionada, fornecemos frases de exemplo rotuladas (ex: perguntas sobre horário rotuladas como 'curso_info'):\n• Naive Bayes: calcula a probabilidade condicional de uma frase pertencer a uma classe com base nas palavras presentes (usando o Teorema de Bayes);\n• Regressão Logística: traça fronteiras lineares para estimar as probabilidades de cada classe de forma muito bem calibrada, ideal para sabermos o percentual de certeza da resposta;\n• SVM (Support Vector Machine): encontra a linha ou hiperplano que separa as classes com a maior margem de segurança possível."
+      ]
+    },
+    {
+      "tag": "treino_teste_overfitting",
+      "categoria": "tecnica",
+      "descricao": "Separação de treino/teste, validação e overfitting (Aula 05)",
+      "patterns": [
+        "Por que separar dados em treino e teste?",
+        "O que é overfitting?",
+        "O que significa sobreajuste do modelo?",
+        "Como saber se o chatbot decorou as respostas?",
+        "O que é validação cruzada?",
+        "Para que serve o conjunto de teste?"
+      ],
+      "responses": [
+        "• Treino e Teste: nunca testamos um modelo com as mesmas frases usadas para ensiná-lo! Separamos parte dos dados para testar se ele realmente aprendeu a generalizar para frases novas e inéditas;\n• Overfitting (Sobreajuste): acontece quando o modelo decora os dados de treino com perfeição, mas erra feio na vida real quando o usuário digita de um jeito um pouco diferente. É como um aluno que decora o gabarito em vez de entender a matéria!"
+      ]
+    },
+    {
+      "tag": "metricas_avaliacao",
+      "categoria": "tecnica",
+      "descricao": "Acurácia, Precisão, Recall, F1 e Matriz de Confusão (Aula 06)",
+      "patterns": [
+        "O que é Acurácia?",
+        "O que é Precisão e Recall?",
+        "O que é F1-Score?",
+        "Por que a acurácia pode enganar?",
+        "O que é uma Matriz de Confusão?",
+        "Como medir a qualidade do chatbot?",
+        "Como avaliar o classificador de texto?"
+      ],
+      "responses": [
+        "Métricas fundamentais de avaliação (vistas no comando /metricas):\n• Acurácia: porcentagem geral de acertos. Pode enganar se houver muitas perguntas fáceis e poucas difíceis;\n• Precisão: de tudo o que o robô disse que era a intenção X, quanto realmente era X? (evita falsos positivos);\n• Recall (Revocação): de todas as perguntas reais da intenção X, quantas o robô conseguiu encontrar? (evita falsos negativos);\n• F1-Score: a média harmônica equilibrada entre Precisão e Recall;\n• Matriz de Confusão: uma tabela visual que mostra exatamente onde o modelo acertou e com quais outros assuntos ele se confundiu."
+      ]
+    },
+    {
+      "tag": "arquitetura_regras_ml_fallback",
+      "categoria": "tecnica",
+      "descricao": "Chatbot por regras vs Machine Learning, Intents e Fallback (Aula 07)",
+      "patterns": [
+        "Qual a diferença entre chatbot de regras e chatbot com IA?",
+        "O que é uma intent?",
+        "O que é Fallback em chatbots?",
+        "Por que ter um nível mínimo de certeza?",
+        "Como o chatbot escolhe a resposta?",
+        "O que acontece se o chatbot não entender a pergunta?"
+      ],
+      "responses": [
+        "• Chatbots de Regras: funcionam com palavras-chave exatas e 'se/senão' (if/else). São fáceis de programar, mas quebram com facilidade se o usuário cometer um erro de digitação;\n• Chatbots com ML: reconhecem a 'Intenção' (Intent) por trás do texto mesmo com frases inéditas;\n• Mecanismo de Fallback: é a rede de proteção! Se a maior probabilidade calculada pelo modelo for menor que o nosso limiar de segurança (ex: 35%), o robô não inventa resposta: ele assume com humildade que não entendeu, sugere opções e guarda a frase no log para aprender depois."
+      ]
+    },
+    {
+      "tag": "integracao_telegram_polling",
+      "categoria": "tecnica",
+      "descricao": "Telegram Bot API, Polling, Webhook e BotFather (Aula 08)",
+      "patterns": [
+        "Como conectar o chatbot ao Telegram?",
+        "O que é o BotFather?",
+        "Qual a diferença entre Polling e Webhook?",
+        "Onde guardar o token do Telegram com segurança?",
+        "Como funciona a Telegram Bot API?",
+        "O que é o método polling?"
+      ],
+      "responses": [
+        "• BotFather: é o robô oficial do Telegram onde você cria o assistente, escolhe o nome e obtém a chave secreta de API (token);\n• Polling vs Webhook: no Polling (usado no nosso projeto), nosso programa em Python fica consultando o Telegram a cada instante: 'Tem mensagem nova aí?'. É ideal para laboratórios porque funciona sem precisar de IP público ou certificado HTTPS! No Webhook, o Telegram envia uma requisição para um servidor web quando chega mensagem;\n• Segurança: o token NUNCA deve ser escrito direto no código nem versionado no Git. Deve ficar protegido dentro do arquivo .env!"
+      ]
+    },
+    {
+      "tag": "etica_lgpd_anonimizacao",
+      "categoria": "tecnica",
+      "descricao": "Ética em Inteligência Artificial e LGPD aplicada a Chatbots (Aula 09)",
+      "patterns": [
+        "O que diz a LGPD sobre chatbots?",
+        "Por que anonimizar as conversas do robô?",
+        "Como proteger a privacidade dos usuários em IA?",
+        "O que é anonimização de dados?",
+        "Quais os riscos éticos de um chatbot?",
+        "Como evitar vazamento de dados nos logs?"
+      ],
+      "responses": [
+        "A Lei Geral de Proteção de Dados (LGPD) e a ética em IA exigem transparência e respeito à privacidade:\n1. Transparência: avisar ao estudante logo no início que ele está interagindo com um robô de aprendizado;\n2. Minimização e Anonimização: nunca armazenar nomes reais, telefones, e-mails ou CPF nos arquivos de log. Nosso bot utiliza hash SHA-256 no ID do usuário e expressões regulares para ocultar qualquer dado pessoal digitado antes de salvar o histórico."
+      ]
+    }
+  ]
+}
