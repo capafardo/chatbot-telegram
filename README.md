@@ -1,3 +1,12 @@
+======================================================
+CETAM - CENTRO DE EDUCAÇÃO TECNOLÓGICA DO AMAZONAS
+IBC - INSTITUTO BENJAMIN CONSTANT
+CURSO TÉCNICO EM INTELIGÊNCIA ARTIFICIAL
+Processamento de Linguagem Natural - PLN e Chatbots
+Prof. Agnaldo Marcelo Fournier
+Exemplo de chatbot tutor pln com integração ao Telegram
+=======================================================
+
 # Chatbot Tutor de PLN & Chatbots
 
 > **Assistente Virtual Educacional em Processamento de Linguagem Natural**  

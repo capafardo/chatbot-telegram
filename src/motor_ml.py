@@ -75,6 +75,7 @@ class MLEngine:
 
         # Componentes Scikit-Learn
         self.vectorizer: TfidfVectorizer = TfidfVectorizer(
+            token_pattern=r"(?u)\b\w+\b",  # Preserva dígitos isolados (ex: 'aula 1') e termos de 1 caractere
             ngram_range=(1, 2),  # Considera palavras isoladas e pares contíguos (Bigramas)
             sublinear_tf=True,   # Aplica escala logarítmica à contagem para suavizar termos repetidos
             strip_accents=None   # A normalização já é feita de forma controlada no nlp_pipeline

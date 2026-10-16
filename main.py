@@ -1,4 +1,11 @@
-"""Ponto de Entrada Principal do Chatbot Tutor de PLN & Chatbots (CETAM / IBC).
+"""
+CETAM - CENTRO DE EDUCAÇÃO TECNOLÓGICA DO AMAZONAS
+IBC - INSTITUTO BENJAMIN CONSTANT
+CURSO TÉCNICO EM INTELIGÊNCIA ARTIFICIAL
+Processamento de Linguagem Natural - PLN e Chatbots
+Prof. Agnaldo Marcelo Fournier
+Exemplo de chatbot tutor pln com integração ao Telegram
+=======================================================
 
 Referência Didática:
     - Inicialização unificada compatível com Linux (Debian/Ubuntu) e Windows 11.

@@ -11,7 +11,8 @@
     "dias_semana": "Segunda a Sexta-feira",
     "horario": "Matutino (1º ao 4º tempo de aula)",
     "docente": "Prof. Agnaldo Marcelo Pereira Fournier",
-    "versao_dataset": "1.0.0"
+    "versao_dataset": "2.0.0",
+    "descricao": "Dataset expandido cobrindo as 10 aulas do plano de ensino do CETAM/IBC, incluindo conteúdos específicos de cada aula, tópicos aprofundados e frases reais observadas nos logs de conversação."
   },
   "intents": [
     {
@@ -28,7 +29,14 @@
         "Tem alguém aí?",
         "E aí, beleza?",
         "Fala aí",
-        "Opa, e aí?"
+        "Opa, e aí?",
+        "oi professor",
+        "opa prof",
+        "bom dia prof",
+        "boa tarde professor",
+        "oi bot",
+        "oi tutor",
+        "saudações"
       ],
       "responses": [
         "Olá! Sou o assistente tutor da disciplina de PLN e Chatbots do CETAM/IBC. Como posso te ajudar nos seus estudos hoje?",
@@ -121,7 +129,12 @@
         "Quando começa e termina a disciplina?",
         "Quais os dias de aula da matéria?",
         "Qual o objetivo da disciplina?",
-        "O que vamos aprender nesse componente?"
+        "O que vamos aprender nesse componente?",
+        "qual a carga horária da disciplina?",
+        "quantas horas tem a disciplina?",
+        "fale sobre a disciplina",
+        "me explica sobre a matéria",
+        "qual o objetivo do componente curricular?"
       ],
       "responses": [
         "A disciplina é 'Processamento de Linguagem Natural (PLN) Chatbots', com carga horária total de 40 horas. O período letivo vai de 05/10/2026 a 19/10/2026, com aulas de segunda a sexta-feira. O objetivo é desenvolver soluções introdutórias de PLN e chatbots práticos com responsabilidade ética no uso de dados."
@@ -137,7 +150,12 @@
         "Quem dá essa aula de chatbots?",
         "Como se chama o prof?",
         "Quem é o professor de PLN?",
-        "Quem está ministrando esse curso?"
+        "Quem está ministrando esse curso?",
+        "qual o nome do professor?",
+        "como se chama nosso professor?",
+        "quem ministra a aula?",
+        "quem é o professor do cetam?",
+        "fale sobre o professor"
       ],
       "responses": [
         "O docente responsável pela disciplina de Processamento de Linguagem Natural e Chatbots é o Prof. Agnaldo Marcelo Pereira Fournier."
@@ -266,7 +284,13 @@
         "O que são stopwords?",
         "Por que tiramos as stopwords?",
         "Palavras como não e nunca são stopwords?",
-        "Como separar o texto em palavras?"
+        "Como separar o texto em palavras?",
+        "fale sobre stopwords",
+        "me explica stopwords",
+        "para que serve tirar stopwords?",
+        "fale sobre tokenização",
+        "como funciona a tokenização de texto?",
+        "o que é remoção de stopwords?"
       ],
       "responses": [
         "• Tokenização: é o ato de picar o texto em pequenos pedacinhos chamados 'tokens' (geralmente palavras avulsas ou pontuações);\n• Stopwords: são palavras muito comuns de ligação (como 'de', 'a', 'o', 'com', 'para') que aparecem em quase todas as frases e trazem pouco conteúdo semântico. Nós removemos essas palavras para economizar memória, mas com MUITO cuidado para NÃO remover palavras de negação (como 'não' ou 'nunca'), pois elas invertem o sentido da dúvida!"
@@ -282,7 +306,12 @@
         "O que é Lematização?",
         "O que é radical de uma palavra em PLN?",
         "Quando usar stemming e quando usar lemmatization?",
-        "Como reduzir palavras ao radical?"
+        "Como reduzir palavras ao radical?",
+        "fale sobre stemming",
+        "fale sobre lematização",
+        "qual a diferença entre radical e lema?",
+        "me explica lematização",
+        "quando usar stemming?"
       ],
       "responses": [
         "Ambas servem para agrupar formas diferentes da mesma palavra:\n• Stemming (Radicalização): corta o final da palavra de forma rápida por regras automáticas até sobrar o radical. Exemplo: 'estudando', 'estudante' e 'estudiosos' viram 'estud'. É rápido, mas às vezes o radical não é uma palavra real do dicionário;\n• Lematização (Lemmatization): usa análise gramatical e dicionário para encontrar a forma canônica da palavra (o lema). Exemplo: 'fui' e 'éramos' viram o verbo 'ser'. É mais preciso e elegante, porém exige mais processamento."
@@ -298,7 +327,12 @@
         "Como usar o módulo re do Python?",
         "Como encontrar datas e números com regex?",
         "Como limpar texto com expressões regulares?",
-        "Regex em chatbots"
+        "Regex em chatbots",
+        "fale sobre regex",
+        "como usar regex no python?",
+        "me explica expressões regulares",
+        "para que serve regex em chatbots?",
+        "como capturar dados com regex?"
       ],
       "responses": [
         "Expressões Regulares (Regex) são fórmulas especiais para encontrar ou substituir padrões de texto. Em chatbots, usamos Regex para:\n1. Identificar dados estruturados como CPF, telefone, e-mails ou datas;\n2. Limpar pontuações, caracteres estranhos e múltiplos espaços;\n3. Anonimizar informações sensíveis nos logs para respeitar a privacidade dos usuários."
@@ -314,7 +348,13 @@
         "O que são n-grams?",
         "O que é bigrama e unigrama?",
         "Como transformar texto em tabela de números?",
-        "Para que serve o Bag of Words em chatbots?"
+        "Para que serve o Bag of Words em chatbots?",
+        "fale sobre bag of words",
+        "me explica bag of words",
+        "o que é saco de palavras?",
+        "fale sobre n-grams",
+        "para que serve unigrama e bigrama?",
+        "como o bigrama ajuda na negação?"
       ],
       "responses": [
         "Modelos de Machine Learning só entendem números, não texto direto!\n• Bag of Words (Saco de Palavras): conta quantas vezes cada palavra do vocabulário aparece na frase, gerando uma lista de números. O ponto fraco é que ele perde a ordem das palavras;\n• N-Grams: para não perder o contexto, agrupamos as palavras vizinhas. Unigramas são palavras sozinhas ('bom'), Bigramas são pares ('não gostei') e Trigramas são trios ('muito bom dia'). Isso ajuda o modelo a entender o contexto da negação!"
@@ -330,7 +370,12 @@
         "Como o TF-IDF calcula a importância de uma palavra?",
         "O que significa Term Frequency Inverse Document Frequency?",
         "Qual a diferença entre BoW e TF-IDF?",
-        "O que são Embeddings?"
+        "O que são Embeddings?",
+        "fale sobre tf-idf",
+        "me explica tf-idf",
+        "o que significa a sigla tf-idf?",
+        "como calcular o tf-idf?",
+        "por que usar tf-idf em vez de contagem simples?"
       ],
       "responses": [
         "O TF-IDF resolve o maior defeito do Bag of Words simples! Ele não apenas conta a frequência da palavra na frase (TF - Term Frequency), mas penaliza as palavras que aparecem em quase todos os documentos da base (IDF - Inverse Document Frequency). Assim, uma palavra rara e específica (como 'matrícula' ou 'reprovação') ganha um peso numérico muito mais alto do que palavras comuns. Já os Embeddings são vetores densos mais avançados que colocam palavras com significados semelhantes próximas no espaço geométrico."
@@ -346,7 +391,13 @@
         "O que é Regressão Logística em PLN?",
         "O que é SVM para classificação textual?",
         "Como ensinar o algoritmo a descobrir a intenção?",
-        "Qual o melhor modelo clássico para chatbots?"
+        "Qual o melhor modelo clássico para chatbots?",
+        "fale sobre regressão logística",
+        "o que é regressão logística?",
+        "fale sobre naive bayes",
+        "como funciona naive bayes?",
+        "qual o algoritmo clássico de classificação?",
+        "me explica os modelos de machine learning"
       ],
       "responses": [
         "Na classificação de intenções supervisionada, fornecemos frases de exemplo rotuladas (ex: perguntas sobre horário rotuladas como 'curso_info'):\n• Naive Bayes: calcula a probabilidade condicional de uma frase pertencer a uma classe com base nas palavras presentes (usando o Teorema de Bayes);\n• Regressão Logística: traça fronteiras lineares para estimar as probabilidades de cada classe de forma muito bem calibrada, ideal para sabermos o percentual de certeza da resposta;\n• SVM (Support Vector Machine): encontra a linha ou hiperplano que separa as classes com a maior margem de segurança possível."
@@ -362,7 +413,12 @@
         "O que significa sobreajuste do modelo?",
         "Como saber se o chatbot decorou as respostas?",
         "O que é validação cruzada?",
-        "Para que serve o conjunto de teste?"
+        "Para que serve o conjunto de teste?",
+        "fale sobre overfitting",
+        "o que significa sobreajuste?",
+        "como evitar o overfitting?",
+        "por que separar treino e teste?",
+        "o que é conjunto de validação?"
       ],
       "responses": [
         "• Treino e Teste: nunca testamos um modelo com as mesmas frases usadas para ensiná-lo! Separamos parte dos dados para testar se ele realmente aprendeu a generalizar para frases novas e inéditas;\n• Overfitting (Sobreajuste): acontece quando o modelo decora os dados de treino com perfeição, mas erra feio na vida real quando o usuário digita de um jeito um pouco diferente. É como um aluno que decora o gabarito em vez de entender a matéria!"
@@ -379,7 +435,15 @@
         "Por que a acurácia pode enganar?",
         "O que é uma Matriz de Confusão?",
         "Como medir a qualidade do chatbot?",
-        "Como avaliar o classificador de texto?"
+        "Como avaliar o classificador de texto?",
+        "fale sobre acurácia",
+        "fale sobre precisão",
+        "fale sobre recall",
+        "fale sobre f1-score",
+        "o que é a matriz de confusão?",
+        "me explica matriz de confusão",
+        "como medir o acerto do bot?",
+        "por que a acurácia engana?"
       ],
       "responses": [
         "Métricas fundamentais de avaliação (vistas no comando /metricas):\n• Acurácia: porcentagem geral de acertos. Pode enganar se houver muitas perguntas fáceis e poucas difíceis;\n• Precisão: de tudo o que o robô disse que era a intenção X, quanto realmente era X? (evita falsos positivos);\n• Recall (Revocação): de todas as perguntas reais da intenção X, quantas o robô conseguiu encontrar? (evita falsos negativos);\n• F1-Score: a média harmônica equilibrada entre Precisão e Recall;\n• Matriz de Confusão: uma tabela visual que mostra exatamente onde o modelo acertou e com quais outros assuntos ele se confundiu."
@@ -395,7 +459,11 @@
         "O que é Fallback em chatbots?",
         "Por que ter um nível mínimo de certeza?",
         "Como o chatbot escolhe a resposta?",
-        "O que acontece se o chatbot não entender a pergunta?"
+        "O que acontece se o chatbot não entender a pergunta?",
+        "fale sobre fallback",
+        "por que o bot precisa de fallback?",
+        "qual a diferença entre bot de regras e bot com ml?",
+        "como funciona o limite de certeza do chatbot?"
       ],
       "responses": [
         "• Chatbots de Regras: funcionam com palavras-chave exatas e 'se/senão' (if/else). São fáceis de programar, mas quebram com facilidade se o usuário cometer um erro de digitação;\n• Chatbots com ML: reconhecem a 'Intenção' (Intent) por trás do texto mesmo com frases inéditas;\n• Mecanismo de Fallback: é a rede de proteção! Se a maior probabilidade calculada pelo modelo for menor que o nosso limiar de segurança (ex: 35%), o robô não inventa resposta: ele assume com humildade que não entendeu, sugere opções e guarda a frase no log para aprender depois."
@@ -411,7 +479,11 @@
         "Qual a diferença entre Polling e Webhook?",
         "Onde guardar o token do Telegram com segurança?",
         "Como funciona a Telegram Bot API?",
-        "O que é o método polling?"
+        "O que é o método polling?",
+        "fale sobre a api do telegram",
+        "como funciona o botfather?",
+        "o que é polling no telegram?",
+        "onde colocar o token do bot?"
       ],
       "responses": [
         "• BotFather: é o robô oficial do Telegram onde você cria o assistente, escolhe o nome e obtém a chave secreta de API (token);\n• Polling vs Webhook: no Polling (usado no nosso projeto), nosso programa em Python fica consultando o Telegram a cada instante: 'Tem mensagem nova aí?'. É ideal para laboratórios porque funciona sem precisar de IP público ou certificado HTTPS! No Webhook, o Telegram envia uma requisição para um servidor web quando chega mensagem;\n• Segurança: o token NUNCA deve ser escrito direto no código nem versionado no Git. Deve ficar protegido dentro do arquivo .env!"
@@ -427,10 +499,340 @@
         "Como proteger a privacidade dos usuários em IA?",
         "O que é anonimização de dados?",
         "Quais os riscos éticos de um chatbot?",
-        "Como evitar vazamento de dados nos logs?"
+        "Como evitar vazamento de dados nos logs?",
+        "fale sobre a lgpd no chatbot",
+        "por que anonimizar as mensagens?",
+        "quais os princípios da lgpd em inteligência artificial?",
+        "como proteger os dados dos alunos nos logs?"
       ],
       "responses": [
         "A Lei Geral de Proteção de Dados (LGPD) e a ética em IA exigem transparência e respeito à privacidade:\n1. Transparência: avisar ao estudante logo no início que ele está interagindo com um robô de aprendizado;\n2. Minimização e Anonimização: nunca armazenar nomes reais, telefones, e-mails ou CPF nos arquivos de log. Nosso bot utiliza hash SHA-256 no ID do usuário e expressões regulares para ocultar qualquer dado pessoal digitado antes de salvar o histórico."
+      ]
+    },
+    {
+      "tag": "aula_01_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 01",
+      "patterns": [
+        "fale sobre a aula 1",
+        "o que tem na aula 1?",
+        "qual o conteúdo da aula 1?",
+        "o que foi ensinado na aula 1?",
+        "resumo da aula 1",
+        "aula 1 de pln",
+        "o que aprendemos na primeira aula?",
+        "conteúdo da aula 01",
+        "fale da aula 1"
+      ],
+      "responses": [
+        "Na Aula 01 (05/10/2026), estudamos a 'Apresentação do Componente & Fundamentos Teóricos de PLN':\n• Histórico da área: do Teste de Turing (1950) e do bot ELIZA (1966) aos assistentes estatísticos modernos;\n• Por que usamos Python: sintaxe intuitiva e ecossistema científico (NLTK, spaCy, Scikit-Learn);\n• O Pipeline Clássico em 4 Etapas: Ingestão de texto, Pré-processamento, Extração de Features e Tomada de Decisão;\n• Apresentação do cronograma das 10 aulas e divisão das equipes do Projeto Integrador!"
+      ]
+    },
+    {
+      "tag": "aula_02_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 02",
+      "patterns": [
+        "fale sobre a aula 2",
+        "o que tem na aula 2?",
+        "qual o conteúdo da aula 2?",
+        "o que foi ensinado na aula 2?",
+        "resumo da aula 2",
+        "aula 2 de pln",
+        "o que aprendemos na segunda aula?",
+        "conteúdo da aula 02",
+        "fale da aula 2"
+      ],
+      "responses": [
+        "Na Aula 02 (06/10/2026), abordamos 'Pré-Processamento Textual & Bibliotecas NLTK e spaCy':\n• O problema do ruído textual na internet: gírias ('vc', 'blz'), pontuação exagerada ('socorroooo!!!') e falta de acentos;\n• A regra de ouro da IA: 'Garbage In, Garbage Out' (dados sujos geram previsões ruins);\n• Normalização de maiúsculas/minúsculas e limpeza básica;\n• Tokenização (separar em palavras) e remoção seletiva de Stopwords, mantendo operadores vitais de negação como 'não' e 'nunca'!"
+      ]
+    },
+    {
+      "tag": "aula_03_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 03",
+      "patterns": [
+        "fale sobre a aula 3",
+        "o que tem na aula 3?",
+        "qual o conteúdo da aula 3?",
+        "o que foi ensinado na aula 3?",
+        "resumo da aula 3",
+        "aula 3 de pln",
+        "o que aprendemos na terceira aula?",
+        "conteúdo da aula 03",
+        "fale da aula 3"
+      ],
+      "responses": [
+        "Na Aula 03 (07/10/2026), aprendemos 'Redução Morfológica & Reconhecimento de Padrões':\n• O desafio da conjugação verbal e plural em português que inflaciona o vocabulário;\n• Stemming (Radicalização heurística rápida via algoritmo RSLP) vs Lemmatização (forma canônica de dicionário com spaCy);\n• Expressões Regulares com o módulo 're' do Python: sintaxe de metacaracteres (\\d, \\w, \\s), limpeza de pontuações e extração de dados estruturados (CPF, datas, telefones);\n• Aplicação na base inicial de mensagens das equipes do Projeto Integrador."
+      ]
+    },
+    {
+      "tag": "aula_04_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 04",
+      "patterns": [
+        "fale sobre a aula 4",
+        "o que tem na aula 4?",
+        "qual o conteúdo da aula 4?",
+        "o que foi ensinado na aula 4?",
+        "resumo da aula 4",
+        "aula 4 de pln",
+        "o que aprendemos na quarta aula?",
+        "conteúdo da aula 04",
+        "fale da aula 4"
+      ],
+      "responses": [
+        "Na Aula 04 (08/10/2026), iniciamos a Fase 2 do Projeto Integrador com 'Representação Numérica de Texto & Extração de Features':\n• Transição da natureza simbólica do texto para matrizes numéricas que alimentam algoritmos de Machine Learning;\n• Bag of Words (BoW): contagem de frequência de termos e o problema da alta esparsidade (matrizes com 99% de zeros);\n• N-Grams: unigramas e bigramas (como 'não gostei') para capturar contexto e relações de adjacência;\n• TF-IDF (Term Frequency - Inverse Document Frequency): penalização de termos banais e valorização de palavras informativas;\n• Introdução conceitual a Word Embeddings."
+      ]
+    },
+    {
+      "tag": "aula_05_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 05",
+      "patterns": [
+        "fale sobre a aula 5",
+        "o que tem na aula 5?",
+        "qual o conteúdo da aula 5?",
+        "o que foi ensinado na aula 5?",
+        "resumo da aula 5",
+        "aula 5 de pln",
+        "o que aprendemos na quinta aula?",
+        "conteúdo da aula 05",
+        "fale da aula 5"
+      ],
+      "responses": [
+        "Na Aula 05 (09/10/2026), realizamos a 'Classificação Supervisionada de Intenções & AV1':\n• Modelos clássicos de Machine Learning supervisionado: Naive Bayes Multinomial, Regressão Logística e SVM;\n• Separação rigorosa entre Treino e Teste com estratificação ('stratify=y') e prevenção de Data Leakage (vazamento de dados);\n• Aplicação da Primeira Avaliação Parcial (AV1 - 10,0 pontos): desafio prático individual/duplas em Jupyter Notebook desenvolvendo pipeline de PLN ponta a ponta com testes em frases inéditas!"
+      ]
+    },
+    {
+      "tag": "aula_06_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 06",
+      "patterns": [
+        "fale sobre a aula 6",
+        "o que tem na aula 6?",
+        "qual o conteúdo da aula 6?",
+        "o que foi ensinado na aula 6?",
+        "resumo da aula 6",
+        "aula 6 de pln",
+        "o que aprendemos na sexta aula?",
+        "conteúdo da aula 06",
+        "fale da aula 6"
+      ],
+      "responses": [
+        "Na Aula 06 (13/10/2026), estudamos 'Avaliação de Modelos, Métricas & Matriz de Confusão':\n• A armadilha da acurácia pura em cenários com classes desbalanceadas (onde uma intenção comum esconde o fracasso nas raras);\n• Precisão (Precision): capacidade de não dar falsos positivos;\n• Recall (Revocação): capacidade de capturar todos os casos reais da intenção;\n• F1-Score: a média harmônica equilibrada entre Precisão e Recall;\n• Matriz de Confusão: mapeamento visual dos acertos e das maiores dúvidas do classificador;\n• Calibração de Confiança: ajuste do limiar probabilístico para ativação segura do Fallback."
+      ]
+    },
+    {
+      "tag": "aula_07_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 07",
+      "patterns": [
+        "fale sobre a aula 7",
+        "o que tem na aula 7?",
+        "qual o conteúdo da aula 7?",
+        "o que foi ensinado na aula 7?",
+        "resumo da aula 7",
+        "aula 7 de pln",
+        "o que aprendemos na sétima aula?",
+        "conteúdo da aula 07",
+        "fale da aula 7"
+      ],
+      "responses": [
+        "Na Aula 07 (14/10/2026), exploramos 'Arquitetura de Chatbots, Fluxos Conversacionais & Logs':\n• A arquitetura ponta a ponta: Interface -> Camada de NLU (Classificador) -> Gerenciador de Diálogo (Dialogue Manager) -> Resposta / Fulfillment;\n• Comparativo didático: Chatbots baseados em Regras vs Chatbots com Machine Learning;\n• Construção da lógica conversacional com menus guiados, botões e dicionários de intenções;\n• Programação de estratégias elegantes de Fallback e gravação auditável do histórico de conversas em JSONL e CSV."
+      ]
+    },
+    {
+      "tag": "aula_08_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 08",
+      "patterns": [
+        "fale sobre a aula 8",
+        "o que tem na aula 8?",
+        "qual o conteúdo da aula 8?",
+        "o que foi ensinado na aula 8?",
+        "resumo da aula 8",
+        "aula 8 de pln",
+        "o que aprendemos na oitava aula?",
+        "conteúdo da aula 08",
+        "fale da aula 8"
+      ],
+      "responses": [
+        "Na Aula 08 (15/10/2026), realizamos a 'Integração de Mensageria & Deploy com Telegram Bot API':\n• Uso do @BotFather para criar o bot oficial, definir nome, comandos (/start, /ajuda) e obter o token com segurança;\n• Conexão assíncrona com a biblioteca python-telegram-bot;\n• Método Polling (consultas periódicas) vs Webhook: por que usamos Polling em laboratório escolar sem IP público;\n• Boas práticas de segurança: isolamento de credenciais no .env, .gitignore e plano de contingência em terminal local (CLI)!"
+      ]
+    },
+    {
+      "tag": "aula_09_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 09",
+      "patterns": [
+        "fale sobre a aula 9",
+        "o que tem na aula 9?",
+        "qual o conteúdo da aula 9?",
+        "o que foi ensinado na aula 9?",
+        "resumo da aula 9",
+        "aula 9 de pln",
+        "o que aprendemos na nona aula?",
+        "conteúdo da aula 09",
+        "fale da aula 9"
+      ],
+      "responses": [
+        "Na Aula 09 (16/10/2026), trabalhamos 'Ética, Conformidade com a LGPD & Preparação AV2':\n• Vieses históricos nos dados, alucinações de modelos e riscos de respostas preconceituosas ou falsas;\n• Princípios da LGPD (Lei 13.709/2018): consentimento, finalidade, transparência e minimização de dados;\n• Privacy by Design: anonimização automática nos logs com hash SHA-256 de usuários e filtros Regex para mascarar CPF, telefones e e-mails;\n• Revisão final de código no Git e ensaio das apresentações para a aula seguinte."
+      ]
+    },
+    {
+      "tag": "aula_10_conteudo",
+      "categoria": "aulas",
+      "descricao": "Resumo e conteúdos específicos da Aula 10",
+      "patterns": [
+        "fale sobre a aula 10",
+        "o que tem na aula 10?",
+        "qual o conteúdo da aula 10?",
+        "o que foi ensinado na aula 10?",
+        "resumo da aula 10",
+        "aula 10 de pln",
+        "o que aprendemos na última aula?",
+        "conteúdo da aula 10",
+        "fale da aula 10"
+      ],
+      "responses": [
+        "Na Aula 10 (19/10/2026), acontece a grande culminância: 'Apresentação Final dos Projetos, Avaliação AV2 & Encerramento':\n• Apresentação prática dos miniassistentes do Projeto Integrador (AV2 - 10,0 pontos);\n• Demonstração ao vivo no Telegram ou modo CLI de contingência;\n• Arguição técnica sobre as escolhas de PLN, justificativa de erros via Matriz de Confusão, conformidade com a LGPD e repositório Git;\n• Devolutiva pedagógica, notas consolidadas, aplicação de Recuperação Final (REC) e encerramento das 40h do componente!"
+      ]
+    },
+    {
+      "tag": "conceito_svm",
+      "categoria": "tecnica",
+      "descricao": "Support Vector Machines (SVM) para classificação textual",
+      "patterns": [
+        "fale sobre svm",
+        "fale sobre SVM",
+        "o que é svm?",
+        "o que é SVM?",
+        "como funciona o svm?",
+        "como funciona o SVM?",
+        "para que serve svm em pln?",
+        "o que é support vector machine?",
+        "o que são hiperplanos no svm?",
+        "qual a vantagem do svm para texto?"
+      ],
+      "responses": [
+        "Support Vector Machine (SVM ou Máquina de Vetores de Suporte) é um algoritmo de aprendizado supervisionado de altíssimo desempenho para texto.\n• Como funciona: ele mapeia as frases representadas por vetores TF-IDF em um espaço multidimensional e encontra o 'hiperplano ideal' que separa as classes com a maior margem de distância possível entre os pontos mais próximos (os vetores de suporte);\n• Vantagens em PLN: lida muito bem com espaços de altíssima dimensão e esparsidade (muitos zeros), sendo extremamente resistente ao overfitting. Na disciplina, estudamos a implementação com kernel linear ('LinearSVC' do Scikit-Learn)!"
+      ]
+    },
+    {
+      "tag": "comparativo_nltk_spacy",
+      "categoria": "tecnica",
+      "descricao": "Diferença e comparação entre as bibliotecas NLTK e spaCy",
+      "patterns": [
+        "qual a diferença entre nltk e spacy?",
+        "qual a diferença entre NLTK e spaCy?",
+        "fale sobre nltk e spacy",
+        "quando usar nltk e quando usar spacy?",
+        "o que é nltk?",
+        "o que é spacy?",
+        "nltk ou spacy?",
+        "qual biblioteca é melhor para pln?"
+      ],
+      "responses": [
+        "Comparativo didático visto na Aula 02:\n• NLTK (Natural Language Toolkit): é a biblioteca clássica acadêmica. Excelente para ensino e pesquisa, pois implementa dezenas de algoritmos de forma transparente e flexível, permitindo inspecionar cada detalhe passo a passo;\n• spaCy: é a biblioteca voltada para produção industrial. Extremamente rápida (escrita em Cython), baseada em modelos neurais pré-treinados (como 'pt_core_news_sm' para o português) e pipelines prontos de alta velocidade.\nEm resumo: usamos NLTK para entender a fundo como cada engrenagem funciona e spaCy quando precisamos de velocidade máxima em produtos finais!"
+      ]
+    },
+    {
+      "tag": "conceito_gigo_qualidade_dados",
+      "categoria": "tecnica",
+      "descricao": "Princípio Garbage In, Garbage Out (GIGO) e qualidade dos dados",
+      "patterns": [
+        "o que é garbage in garbage out?",
+        "o que é gigo?",
+        "o que significa gigo na ia?",
+        "por que a qualidade dos dados é importante?",
+        "fale sobre garbage in garbage out",
+        "dados ruins estragam o modelo?",
+        "qual a regra de ouro dos dados em pln?"
+      ],
+      "responses": [
+        "'Garbage In, Garbage Out' (GIGO - ou 'Lixo entra, lixo sai') é a regra de ouro da Inteligência Artificial e do PLN (estudada na Aula 02)!\nSignifica que mesmo o algoritmo de Machine Learning mais avançado do mundo falhará se a sua base de dados de treinamento for suja, desorganizada, repleta de ruídos ou mal rotulada. Nenhum modelo matemático corrige dados ruins: por isso dedicamos tanta atenção ao pré-processamento, normalização, limpeza de ruídos e curadoria atenta do nosso dataset de intenções!"
+      ]
+    },
+    {
+      "tag": "algoritmo_rslp_stemming",
+      "categoria": "tecnica",
+      "descricao": "Algoritmo RSLP (Removedor de Sufixos da Língua Portuguesa)",
+      "patterns": [
+        "o que é o algoritmo rslp?",
+        "o que é rslp?",
+        "como funciona o removedor de sufixos?",
+        "fale sobre o rslp",
+        "stemming em português com rslp",
+        "quem criou o rslp?"
+      ],
+      "responses": [
+        "O RSLP (Removedor de Sufixos da Língua Portuguesa), criado por Viviane Orengo e Christian Huyck, é o algoritmo de Stemming padrão para a língua portuguesa disponível no NLTK ('RSLPStemmer').\nEle opera através de regras ordenadas que eliminam sufixos de plurais, aumentativos/diminutivos, advérbios e desinências verbais, reduzindo palavras como 'estudando', 'estudante' e 'estudiosos' ao radical comum 'estud'. É ultrarrápido, embora possa produzir radicais que não são palavras completas do dicionário."
+      ]
+    },
+    {
+      "tag": "vazamento_dados_leakage",
+      "categoria": "tecnica",
+      "descricao": "Prevenção de Data Leakage (Vazamento de Dados) na vetorização",
+      "patterns": [
+        "o que é data leakage?",
+        "o que é vazamento de dados?",
+        "fale sobre data leakage",
+        "por que ajustar o tf-idf só no treino?",
+        "qual o perigo do vazamento de dados?",
+        "como evitar data leakage em pln?"
+      ],
+      "responses": [
+        "Data Leakage (Vazamento de Dados) é um erro metodológico grave em Machine Learning (destacado na Aula 05)!\nOcorre quando informações do conjunto de teste 'vazam' para a fase de treinamento. Em PLN, acontece quando você executa 'fit_transform()' com o TF-IDF em toda a base antes de fazer a divisão treino/teste. A prática correta é:\n1. Separar primeiro os dados em Treino e Teste;\n2. Fazer 'vectorizer.fit_transform(X_treino)' apenas nas frases de treino;\n3. Aplicar apenas 'vectorizer.transform(X_teste)' no teste, simulando frases realmente inéditas que o bot nunca viu!"
+      ]
+    },
+    {
+      "tag": "polling_vs_webhook",
+      "categoria": "tecnica",
+      "descricao": "Comparação detalhada entre Long Polling e Webhook no Telegram",
+      "patterns": [
+        "qual a diferença entre polling e webhook?",
+        "polling vs webhook",
+        "o que é long polling no telegram?",
+        "o que é webhook?",
+        "por que usar polling e não webhook?",
+        "como funciona o polling?"
+      ],
+      "responses": [
+        "Diferença essencial entre métodos de mensageria (Aula 08):\n• Long Polling: nosso programa em Python fica enviando requisições repetidas ao servidor do Telegram perguntando: 'Há novas mensagens para o bot?'. Vantagens: funciona em qualquer computador, atrás de firewalls, roteadores domésticos ou redes escolares sem IP fixo nem portas abertas;\n• Webhook: o Telegram se encarrega de 'empurrar' (Push) a mensagem enviando uma requisição HTTP POST para uma URL do nosso bot. Vantagens: mais eficiente em servidores de grande escala, mas exige IP público, domínio e certificado SSL/HTTPS válido.\nPor isso, no laboratório do CETAM/IBC adotamos o Polling, garantindo simplicidade e funcionamento imediato!"
+      ]
+    },
+    {
+      "tag": "lgpd_pii_privacy_by_design",
+      "categoria": "tecnica",
+      "descricao": "PII (Personally Identifiable Information) e Privacy by Design",
+      "patterns": [
+        "o que é pii?",
+        "o que é PII?",
+        "o que significa personally identifiable information?",
+        "o que é privacy by design?",
+        "quais dados são considerados pii?",
+        "fale sobre pii e lgpd",
+        "como aplicar privacy by design no bot?"
+      ],
+      "responses": [
+        "Conceitos fundamentais de governança e ética em IA (Aula 09):\n• PII (Personally Identifiable Information): qualquer dado que permita identificar um indivíduo direta ou indiretamente (CPF, nome completo, telefone, e-mail, matrícula, biometria);\n• Privacy by Design: conceber o software protegendo a privacidade desde a primeira linha de código, e não como um remendo posterior. No nosso bot, isso é cumprido através do mascaramento instantâneo por Regex de qualquer PII antes de salvar o histórico em disco e no cálculo de hash SHA-256 do ID de usuário!"
+      ]
+    },
+    {
+      "tag": "apresentacao_av2_dicas",
+      "categoria": "institucional",
+      "descricao": "Roteiro, dicas e critérios para a apresentação da AV2 na Aula 10",
+      "patterns": [
+        "como vai ser a apresentação da av2?",
+        "dicas para a apresentação final",
+        "quais os critérios da banca na aula 10?",
+        "o que falar na apresentação do projeto?",
+        "como apresentar o projeto integrador?",
+        "roteiro da apresentação da av2"
+      ],
+      "responses": [
+        "Roteiro oficial de 10 minutos para a AV2 (Aula 10):\n1. O Nicho e o Problema (1 min): Apresentar os membros da equipe e qual dor do mundo real o assistente resolve;\n2. Dataset e Curadoria (2 min): Mostrar a estrutura do JSON, número de intenções e qualidade dos exemplos;\n3. Demonstração ao Vivo (4 min): Conversar com o bot no Telegram ou CLI, demonstrando intenções corretas e o Fallback funcionando;\n4. Métricas, LGPD e Git (2 min): Mostrar o relatório do comando /metricas (F1-score, acurácia), os logs anonimizados e o histórico de commits no Git;\n5. Dica de Ouro: Se o bot errar uma frase ao vivo, não se desespere! Demonstre maturidade técnica explicando por que o classificador se confundiu e como o comando /regenerar resolve o problema!"
       ]
     }
   ]
