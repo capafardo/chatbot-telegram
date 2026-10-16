@@ -12,12 +12,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Set
 
-from src.config import CONFIDENCE_THRESHOLD, is_user_admin
-from src.evaluator import ModelEvaluator
-from src.ml_engine import MLEngine, PredictionResult
-from src.nlp_pipeline import NLPPipeline
-from src.privacy_logger import PrivacyLogger
-from src.self_improver import SelfImprover
+from src.configuracao import CONFIDENCE_THRESHOLD, is_user_admin
+from src.avaliador import ModelEvaluator
+from src.motor_ml import MLEngine, PredictionResult
+from src.pipeline_pln import NLPPipeline
+from src.registrador_privacidade import PrivacyLogger
+from src.auto_aperfeicoamento import SelfImprover
 
 
 @dataclass

@@ -22,8 +22,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 
-from src.config import CONFIDENCE_THRESHOLD, DEFAULT_ML_MODEL, INTENTS_FILE
-from src.nlp_pipeline import NLPPipeline
+from src.configuracao import CONFIDENCE_THRESHOLD, DEFAULT_ML_MODEL, INTENTS_FILE
+from src.pipeline_pln import NLPPipeline
 
 # Respostas padrão para quando a confiança do modelo for inferior ao limiar
 FALLBACK_RESPONSES = [

@@ -154,14 +154,14 @@ chatbot-telegram/
 ├── logs/
 │   └── .gitkeep                 # Armazena conversas anonimizadas (conversas.jsonl/.csv)
 ├── src/
-│   ├── config.py                # Leitura do .env e compatibilidade Windows/Linux
-│   ├── nlp_pipeline.py          # Pré-processamento, gírias, stopwords e inspeção /debug
-│   ├── ml_engine.py             # TF-IDF, Regressão Logística, Naive Bayes e Fallback
-│   ├── evaluator.py             # Validação cruzada e cálculo de métricas
-│   ├── privacy_logger.py        # Anonimização LGPD (SHA-256 + Regex de PII)
-│   ├── self_improver.py         # Curadoria de mensagens em fallback e hot retrain
-│   ├── bot_controller.py        # Orquestrador agnóstico de canal
-│   ├── telegram_adapter.py      # Conexão com Telegram Bot API (Polling)
-│   └── cli_adapter.py           # Interface de terminal (CLI)
+│   ├── configuracao.py              # Leitura do .env e compatibilidade Windows/Linux
+│   ├── pipeline_pln.py              # Pré-processamento, gírias, stopwords e inspeção /debug
+│   ├── motor_ml.py                  # TF-IDF, Regressão Logística, Naive Bayes e Fallback
+│   ├── avaliador.py                 # Validação cruzada e cálculo de métricas
+│   ├── registrador_privacidade.py   # Anonimização LGPD (SHA-256 + Regex de PII)
+│   ├── auto_aperfeicoamento.py      # Curadoria de mensagens em fallback e hot retrain
+│   ├── controlador_bot.py           # Orquestrador agnóstico de canal
+│   ├── adaptador_telegram.py        # Conexão com Telegram Bot API (Polling)
+│   └── adaptador_cli.py             # Interface de terminal (CLI)
 └── tests/                       # Testes automatizados do sistema
 ```

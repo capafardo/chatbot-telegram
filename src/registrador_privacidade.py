@@ -18,7 +18,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from src.config import LOG_CSV_FILE, LOG_JSONL_FILE, LOGS_DIR, SALT_ANONYMIZATION
+from src.configuracao import LOG_CSV_FILE, LOG_JSONL_FILE, LOGS_DIR, SALT_ANONYMIZATION
 
 # ==============================================================================
 # PADRÕES DE EXPRESSÕES REGULARES PARA DADOS SENSÍVEIS (PII)

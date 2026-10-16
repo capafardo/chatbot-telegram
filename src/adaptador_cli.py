@@ -12,8 +12,8 @@ from __future__ import annotations
 import sys
 from typing import Optional
 
-from src.bot_controller import BotController
-from src.config import get_system_summary
+from src.controlador_bot import BotController
+from src.configuracao import get_system_summary
 
 
 class CLIAdapter:

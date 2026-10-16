@@ -21,10 +21,10 @@ from __future__ import annotations
 import argparse
 import sys
 
-from src.bot_controller import BotController
-from src.cli_adapter import CLIAdapter
-from src.config import get_system_summary, validate_telegram_config
-from src.telegram_adapter import TelegramAdapter
+from src.controlador_bot import BotController
+from src.adaptador_cli import CLIAdapter
+from src.configuracao import get_system_summary, validate_telegram_config
+from src.adaptador_telegram import TelegramAdapter
 
 
 def parse_arguments() -> argparse.Namespace:

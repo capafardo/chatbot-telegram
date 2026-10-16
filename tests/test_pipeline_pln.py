@@ -1,6 +1,6 @@
 """Testes unitários para o pipeline de PLN."""
 
-from src.nlp_pipeline import NLPPipeline
+from src.pipeline_pln import NLPPipeline
 
 
 def test_slang_expansion():

@@ -1,6 +1,6 @@
 """Testes unitários para o motor de Machine Learning e Fallback."""
 
-from src.ml_engine import MLEngine
+from src.motor_ml import MLEngine
 
 
 def test_model_training_and_intent_recognition():

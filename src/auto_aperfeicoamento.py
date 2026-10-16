@@ -17,9 +17,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from src.config import BACKUP_DIR, INTENTS_FILE, LOG_JSONL_FILE
-from src.ml_engine import MLEngine
-from src.privacy_logger import PrivacyLogger
+from src.configuracao import BACKUP_DIR, INTENTS_FILE, LOG_JSONL_FILE
+from src.motor_ml import MLEngine
+from src.registrador_privacidade import PrivacyLogger
 
 
 class SelfImprover:

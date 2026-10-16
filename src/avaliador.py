@@ -20,8 +20,8 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 
-from src.ml_engine import MLEngine
-from src.privacy_logger import PrivacyLogger
+from src.motor_ml import MLEngine
+from src.registrador_privacidade import PrivacyLogger
 
 
 class ModelEvaluator:

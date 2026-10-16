@@ -1,6 +1,6 @@
 """Testes de integração para o BotController."""
 
-from src.bot_controller import BotController
+from src.controlador_bot import BotController
 
 
 def test_start_command():

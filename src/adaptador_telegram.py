@@ -21,8 +21,8 @@ from telegram.ext import (
     filters,
 )
 
-from src.bot_controller import BotController
-from src.config import TELEGRAM_API_KEY, validate_telegram_config
+from src.controlador_bot import BotController
+from src.configuracao import TELEGRAM_API_KEY, validate_telegram_config
 
 # Configuração de logging informativo
 logging.basicConfig(

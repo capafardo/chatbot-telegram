@@ -15,7 +15,7 @@ import unicodedata
 from typing import Any, Dict, List, Set
 from pathlib import Path
 
-from src.config import SLANG_FILE
+from src.configuracao import SLANG_FILE
 
 # ==============================================================================
 # STOPWORDS EM LÍNGUA PORTUGUESA (COM PRESERVAÇÃO DE NEGAÇÃO E PRONOMES INTERROGATIVOS)

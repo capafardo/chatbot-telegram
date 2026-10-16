@@ -2,7 +2,7 @@
 
 import tempfile
 from pathlib import Path
-from src.privacy_logger import PrivacyLogger
+from src.registrador_privacidade import PrivacyLogger
 
 
 def test_pii_sanitization():
