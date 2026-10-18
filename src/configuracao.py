@@ -4,6 +4,7 @@ Referência Didática:
     - Boas práticas de Engenharia de Software e Segurança em Chatbots (Aulas 07 e 08).
     - Compatibilidade total entre Linux (Debian/Ubuntu) e Windows 11.
     - Isolamento de credenciais usando variáveis de ambiente (.env).
+    - Suporte a customização de dataset (DATASET_PATH) e radicalização (USE_STEMMING).
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from __future__ import annotations
 import os
 import platform
 from pathlib import Path
-from typing import List, Set
+from typing import Set
 
 # Tentativa segura de carregar o python-dotenv (se instalado no ambiente)
 try:
@@ -24,79 +25,99 @@ except ImportError:
 # ==============================================================================
 # O uso de Path(__file__).resolve() garante caminhos absolutos corretos
 # independentemente do diretório de onde o usuário executou o comando 'python'.
-BASE_DIR: Path = Path(__file__).resolve().parent.parent
+DIRETORIO_BASE: Path = Path(__file__).resolve().parent.parent
 
-DATA_DIR: Path = BASE_DIR / "data"
-INTENTS_FILE: Path = DATA_DIR / "intencoes.json"
-SLANG_FILE: Path = DATA_DIR / "dicionario_girias.json"
-BACKUP_DIR: Path = DATA_DIR / "backups"
+ARQUIVO_ENV: Path = DIRETORIO_BASE / ".env"
+ARQUIVO_ENV_EXEMPLO: Path = DIRETORIO_BASE / ".env.example"
 
-LOGS_DIR: Path = BASE_DIR / "logs"
-LOG_JSONL_FILE: Path = LOGS_DIR / "conversas.jsonl"
-LOG_CSV_FILE: Path = LOGS_DIR / "conversas.csv"
+# Carregamento antecipado das variáveis de ambiente do .env
+if load_dotenv and ARQUIVO_ENV.exists():
+    load_dotenv(dotenv_path=ARQUIVO_ENV, encoding="utf-8")
 
-ENV_FILE: Path = BASE_DIR / ".env"
-ENV_EXAMPLE_FILE: Path = BASE_DIR / ".env.example"
+DIRETORIO_DADOS: Path = DIRETORIO_BASE / "data"
+
+# Permite que um aluno aponte para outro arquivo JSON de intenções via .env
+_caminho_dataset_env: str = os.getenv("DATASET_PATH", "").strip()
+if _caminho_dataset_env:
+    _caminho_resolvido = Path(_caminho_dataset_env)
+    ARQUIVO_INTENCOES: Path = (
+        _caminho_resolvido
+        if _caminho_resolvido.is_absolute()
+        else (DIRETORIO_BASE / _caminho_resolvido)
+    )
+else:
+    ARQUIVO_INTENCOES: Path = DIRETORIO_DADOS / "intencoes.json"
+
+ARQUIVO_GIRIAS: Path = DIRETORIO_DADOS / "dicionario_girias.json"
+DIRETORIO_BACKUP: Path = DIRETORIO_DADOS / "backups"
+
+DIRETORIO_LOGS: Path = DIRETORIO_BASE / "logs"
+ARQUIVO_LOG_JSONL: Path = DIRETORIO_LOGS / "conversas.jsonl"
+ARQUIVO_LOG_CSV: Path = DIRETORIO_LOGS / "conversas.csv"
 
 # Garante que as pastas necessárias existam em tempo de execução
-DATA_DIR.mkdir(parents=True, exist_ok=True)
-BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-LOGS_DIR.mkdir(parents=True, exist_ok=True)
+DIRETORIO_DADOS.mkdir(parents=True, exist_ok=True)
+DIRETORIO_BACKUP.mkdir(parents=True, exist_ok=True)
+DIRETORIO_LOGS.mkdir(parents=True, exist_ok=True)
 
 # ==============================================================================
-# 2. CARREGAMENTO DE VARIÁVEIS DE AMBIENTE
+# 2. LEITURA DE PARÂMETROS DE AMBIENTE
 # ==============================================================================
-if load_dotenv and ENV_FILE.exists():
-    load_dotenv(dotenv_path=ENV_FILE, encoding="utf-8")
+# Chave da API do Telegram
+CHAVE_API_TELEGRAM: str = os.getenv("TELEGRAM_API_KEY", "").strip()
 
-# Configurações do Telegram
-TELEGRAM_API_KEY: str = os.getenv("TELEGRAM_API_KEY", "").strip()
-
-# Whitelist de usuários (chat_ids autorizados)
-_raw_whitelist: str = os.getenv("TELEGRAM_WHITELIST", "").strip()
-TELEGRAM_WHITELIST: Set[str] = {
-    item.strip() for item in _raw_whitelist.split(",") if item.strip()
+# Lista de permissão (Whitelist) de administradores (chat_ids autorizados no /regenerar)
+_lista_bruta: str = os.getenv("TELEGRAM_WHITELIST", "").strip()
+LISTA_PERMISSAO_TELEGRAM: Set[str] = {
+    item.strip() for item in _lista_bruta.split(",") if item.strip()
 }
 
 # Limiar de confiança para acionar o Fallback (padrão: 0.35)
 try:
-    CONFIDENCE_THRESHOLD: float = float(os.getenv("CONFIDENCE_THRESHOLD", "0.35"))
+    LIMIAR_CONFIANCA: float = float(os.getenv("CONFIDENCE_THRESHOLD", "0.35"))
 except ValueError:
-    CONFIDENCE_THRESHOLD = 0.35
+    LIMIAR_CONFIANCA = 0.35
 
 # Salt secreto para anonimização em conformidade com a LGPD (SHA-256)
-SALT_ANONYMIZATION: str = os.getenv(
+SAL_ANONIMIZACAO: str = os.getenv(
     "SALT_ANONYMIZATION", "cetam_ibc_pln_2026_salt_seguro"
 ).strip()
 
 # Modelo clássico padrão de ML: LogisticRegression ou MultinomialNB
-DEFAULT_ML_MODEL: str = os.getenv("DEFAULT_ML_MODEL", "LogisticRegression").strip()
+MODELO_ML_PADRAO: str = os.getenv("DEFAULT_ML_MODEL", "LogisticRegression").strip()
+
+# Uso de Stemming (radicalização) na vetorização TF-IDF (padrão: False)
+_usar_stemming_bruto: str = os.getenv("USE_STEMMING", "false").strip().lower()
+USAR_STEMMING: bool = _usar_stemming_bruto in ("true", "1", "sim", "yes", "on")
+
+# Nível de log do sistema
+NIVEL_LOG: str = os.getenv("LOG_LEVEL", "INFO").strip().upper()
 
 # ==============================================================================
 # 3. DETECÇÃO E DIAGNÓSTICO DE AMBIENTE
 # ==============================================================================
-CURRENT_OS: str = platform.system()
-IS_WINDOWS: bool = CURRENT_OS.lower() == "windows"
-IS_LINUX: bool = CURRENT_OS.lower() == "linux"
+SISTEMA_OPERACIONAL_ATUAL: str = platform.system()
+EH_WINDOWS: bool = SISTEMA_OPERACIONAL_ATUAL.lower() == "windows"
+EH_LINUX: bool = SISTEMA_OPERACIONAL_ATUAL.lower() == "linux"
 
 
-def is_user_admin(user_id: int | str) -> bool:
-    """Verifica se um determinado ID de usuário está na Whitelist administrativa.
+def eh_usuario_admin(id_usuario: int | str) -> bool:
+    """Verifica se um determinado ID de usuário está na lista administrativa (Whitelist).
 
     Regra Didática:
-        Se a Whitelist estiver vazia, nenhum usuário remoto tem privilégios
+        Se a lista estiver vazia, nenhum usuário remoto tem privilégios
         de curadoria (/regenerar) pelo Telegram por motivos de segurança,
         restringindo esse comando ao console/CLI local do professor.
-        Se a Whitelist contiver IDs, apenas os IDs listados têm permissão.
+        Se a lista contiver IDs, apenas os IDs listados têm permissão.
     """
-    if not TELEGRAM_WHITELIST:
+    if not LISTA_PERMISSAO_TELEGRAM:
         return False
-    return str(user_id) in TELEGRAM_WHITELIST
+    return str(id_usuario) in LISTA_PERMISSAO_TELEGRAM
 
 
-def validate_telegram_config() -> tuple[bool, str]:
+def validar_config_telegram() -> tuple[bool, str]:
     """Valida se o ambiente possui os pré-requisitos para iniciar o bot do Telegram."""
-    if not TELEGRAM_API_KEY or "sua_chave_aqui" in TELEGRAM_API_KEY:
+    if not CHAVE_API_TELEGRAM or "sua_chave_aqui" in CHAVE_API_TELEGRAM:
         return (
             False,
             "TELEGRAM_API_KEY não configurada no arquivo .env. "
@@ -106,18 +127,19 @@ def validate_telegram_config() -> tuple[bool, str]:
     return True, "Configuração do Telegram validada com sucesso."
 
 
-def get_system_summary() -> dict[str, str | bool | float | int]:
+def obter_resumo_sistema() -> dict[str, str | bool | float | int]:
     """Retorna um resumo de informações do ambiente operacional e de configuração."""
     return {
-        "sistema_operacional": CURRENT_OS,
-        "is_windows": IS_WINDOWS,
-        "is_linux": IS_LINUX,
-        "base_dir": str(BASE_DIR),
-        "intents_existe": INTENTS_FILE.exists(),
-        "slang_existe": SLANG_FILE.exists(),
-        "limiar_fallback": CONFIDENCE_THRESHOLD,
-        "whitelist_tamanho": len(TELEGRAM_WHITELIST),
+        "sistema_operacional": SISTEMA_OPERACIONAL_ATUAL,
+        "eh_windows": EH_WINDOWS,
+        "eh_linux": EH_LINUX,
+        "diretorio_base": str(DIRETORIO_BASE),
+        "intencoes_existe": ARQUIVO_INTENCOES.exists(),
+        "girias_existe": ARQUIVO_GIRIAS.exists(),
+        "limiar_fallback": LIMIAR_CONFIANCA,
+        "usar_stemming": USAR_STEMMING,
+        "tamanho_whitelist": len(LISTA_PERMISSAO_TELEGRAM),
         "telegram_configurado": bool(
-            TELEGRAM_API_KEY and "sua_chave_aqui" not in TELEGRAM_API_KEY
+            CHAVE_API_TELEGRAM and "sua_chave_aqui" not in CHAVE_API_TELEGRAM
         ),
     }

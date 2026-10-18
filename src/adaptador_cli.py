@@ -5,77 +5,75 @@ Referência Didática:
     - Plano de contingência: simulação local no terminal do computador caso ocorram
       restrições de internet ou bloqueio do Telegram na rede da escola.
     - Oferece menu interativo completo de administração e curadoria supervisionada (/regenerar).
+    - Modular: exibe o nome e identidade do bot configurados em `data/intencoes.json`.
 """
 
 from __future__ import annotations
 
-import sys
-from typing import Optional
-
-from src.controlador_bot import BotController
-from src.configuracao import get_system_summary
+from src.configuracao import obter_resumo_sistema
+from src.controlador_bot import ControladorBot
 
 
-class CLIAdapter:
-    """Interface de terminal para interação com o tutor e curadoria pelo professor."""
+class AdaptadorCLI:
+    """Interface de terminal para interação com o assistente e curadoria pelo professor."""
 
-    def __init__(self, controller: BotController | None = None) -> None:
-        self.controller: BotController = controller or BotController()
+    def __init__(self, controlador: ControladorBot | None = None) -> None:
+        self.controlador: ControladorBot = controlador or ControladorBot()
 
-    def run_regenerate_interactive(self) -> None:
+    def executar_regenerar_interativo(self) -> None:
         """Menu interativo no terminal para curadoria supervisionada (/regenerar)."""
         print("\n" + "=" * 65)
         print("🛠️  PAINEL DE CURADORIA SUPERVISIONADA (/regenerar)")
         print("=" * 65)
 
-        pending = self.controller.improver.get_pending_fallbacks()
-        if not pending:
+        pendentes = self.controlador.aperfeicoador.obter_fallbacks_pendentes()
+        if not pendentes:
             print("✅ Nenhuma mensagem com Fallback pendente de revisão!")
             print("=" * 65 + "\n")
             return
 
-        all_intents = self.controller.ml.get_all_intents()
-        print(f"Foram encontradas {len(pending)} mensagem(ns) pendente(s):\n")
+        todas_intencoes = self.controlador.ml.obter_todas_intencoes()
+        print(f"Foram encontradas {len(pendentes)} mensagem(ns) pendente(s):\n")
 
-        for idx, item in enumerate(pending, start=1):
-            phrase = item["mensagem_anonimizada"]
-            inter_id = item["id_interacao"]
+        for idx, item in enumerate(pendentes, start=1):
+            frase = item["mensagem_anonimizada"]
+            id_inter = item["id_interacao"]
 
-            print(f"\n[{idx}/{len(pending)}] Dúvida do Aluno: \"{phrase}\"")
+            print(f"\n[{idx}/{len(pendentes)}] Mensagem Recebida: \"{frase}\"")
             print("Opções:")
             print("  [1] Associar a uma intenção existente")
             print("  [2] Criar uma nova intenção no dataset")
             print("  [3] Ignorar / Descartar (ruído/fora de escopo)")
             print("  [0] Sair do modo regenerar")
 
-            choice = input("Escolha uma opção (0-3): ").strip()
-            if choice == "0":
+            escolha = input("Escolha uma opção (0-3): ").strip()
+            if escolha == "0":
                 print("Curadoria encerrada.")
                 break
 
-            elif choice == "1":
+            elif escolha == "1":
                 print("\nIntenções disponíveis:")
-                for i_idx, tag in enumerate(all_intents, start=1):
+                for i_idx, tag in enumerate(todas_intencoes, start=1):
                     print(f"  {i_idx:2d}. {tag}")
 
-                sel = input("\nDigite o nome ou número da intenção: ").strip()
-                target_tag = ""
-                if sel.isdigit() and 1 <= int(sel) <= len(all_intents):
-                    target_tag = all_intents[int(sel) - 1]
-                elif sel in all_intents:
-                    target_tag = sel
+                selecao = input("\nDigite o nome ou número da intenção: ").strip()
+                tag_alvo = ""
+                if selecao.isdigit() and 1 <= int(selecao) <= len(todas_intencoes):
+                    tag_alvo = todas_intencoes[int(selecao) - 1]
+                elif selecao in todas_intencoes:
+                    tag_alvo = selecao
                 else:
                     print("❌ Intenção inválida. Operação cancelada para esta mensagem.")
                     continue
 
-                success, msg = self.controller.improver.add_phrase_to_intent(
-                    intent_tag=target_tag,
-                    phrase=phrase,
-                    interaction_id=inter_id
+                _, msg = self.controlador.aperfeicoador.adicionar_frase_a_intencao(
+                    tag_intencao=tag_alvo,
+                    frase=frase,
+                    id_interacao=id_inter
                 )
                 print(f"Resultado: {msg}")
 
-            elif choice == "2":
+            elif escolha == "2":
                 tag = input("Tag da nova intenção (ex: regras_laboratorio): ").strip()
                 desc = input("Descrição curta da intenção: ").strip()
                 resp = input("Resposta que o robô deve enviar: ").strip()
@@ -84,61 +82,66 @@ class CLIAdapter:
                     print("❌ Tag e resposta são obrigatórios.")
                     continue
 
-                success, msg = self.controller.improver.create_new_intent(
+                _, msg = self.controlador.aperfeicoador.criar_nova_intencao(
                     tag=tag,
                     categoria="tecnica",
                     descricao=desc,
-                    first_pattern=phrase,
-                    first_response=resp,
-                    interaction_id=inter_id
+                    primeiro_padrao=frase,
+                    primeira_resposta=resp,
+                    id_interacao=id_inter
                 )
                 print(f"Resultado: {msg}")
                 # Atualiza lista de intenções
-                all_intents = self.controller.ml.get_all_intents()
+                todas_intencoes = self.controlador.ml.obter_todas_intencoes()
 
-            elif choice == "3":
-                self.controller.improver.mark_log_reviewed(inter_id)
+            elif escolha == "3":
+                self.controlador.aperfeicoador.marcar_log_revisado(id_inter)
                 print("Mensagem marcada como revisada/descartada.")
 
         print("\n" + "=" * 65 + "\n")
 
-    def start(self) -> None:
+    def iniciar(self) -> None:
         """Inicia o loop interativo no terminal."""
-        summary = get_system_summary()
+        resumo = obter_resumo_sistema()
+        ident = self.controlador.obter_identidade_bot()
+        nome_exibicao = ident["nome_bot"].upper()
+        prompt_bot = ident["nome_curto"]
+        instituicao = ident["instituicao"] or "Modo Local"
+
         print("\n" + "=" * 65)
-        print("🤖 CHATBOT TUTOR DE PLN & CHATBOTS — MODO TERMINAL (CLI)")
-        print(f"🏛️  CETAM / IBC | Sistema Operacional: {summary['sistema_operacional']}")
+        print(f"🤖 {nome_exibicao} — MODO TERMINAL (CLI)")
+        print(f"🏛️  {instituicao} | SO: {resumo['sistema_operacional']}")
         print("💡 Digite sua mensagem, use comandos (/debug, /metricas, /ajuda)")
         print("   ou digite 'sair' para encerrar.")
         print("=" * 65 + "\n")
 
-        user_id = "console_local"
+        id_usuario = "console_local"
 
         while True:
             try:
-                user_input = input("\nVocê > ").strip()
-                if not user_input:
+                entrada_usuario = input("\nVocê > ").strip()
+                if not entrada_usuario:
                     continue
 
-                if user_input.lower() in ("sair", "exit", "quit", "q"):
+                if entrada_usuario.lower() in ("sair", "exit", "quit", "q"):
                     print("\nEncerrando sessão no terminal. Bons estudos e até logo!")
                     break
 
-                if user_input == "/regenerar":
-                    self.run_regenerate_interactive()
+                if entrada_usuario == "/regenerar":
+                    self.executar_regenerar_interativo()
                     continue
 
                 # Processa via controlador central
-                response = self.controller.handle_message(
-                    user_id=user_id,
-                    message=user_input,
-                    channel="cli"
+                resposta = self.controlador.processar_mensagem(
+                    id_usuario=id_usuario,
+                    mensagem=entrada_usuario,
+                    canal="cli"
                 )
 
-                print(f"\nTutor >\n{response.text}")
+                print(f"\n{prompt_bot} >\n{resposta.texto}")
 
             except (KeyboardInterrupt, EOFError):
                 print("\nEncerrando o assistente...")
                 break
-            except Exception as e:
-                print(f"\n❌ Erro durante o processamento: {e}")
+            except Exception as erro:
+                print(f"\n❌ Erro durante o processamento: {erro}")

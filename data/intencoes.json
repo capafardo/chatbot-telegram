@@ -1,5 +1,8 @@
 {
   "metadata": {
+    "nome_bot": "Chatbot Tutor de PLN e Chatbots",
+    "nome_curto": "Tutor",
+    "dominio_assunto": "Processamento de Linguagem Natural (PLN) e Chatbots",
     "instituicao": "CETAM - Centro de Educação Tecnológica do Amazonas",
     "unidade": "UDE - Unidade Descentralizada de Ensino",
     "escola": "IBC - Instituto Benjamin Constant (Manaus/AM)",
@@ -11,8 +14,20 @@
     "dias_semana": "Segunda a Sexta-feira",
     "horario": "Matutino (1º ao 4º tempo de aula)",
     "docente": "Prof. Agnaldo Marcelo Pereira Fournier",
-    "versao_dataset": "2.0.0",
-    "descricao": "Dataset expandido cobrindo as 10 aulas do plano de ensino do CETAM/IBC, incluindo conteúdos específicos de cada aula, tópicos aprofundados e frases reais observadas nos logs de conversação."
+    "versao_dataset": "2.1.0",
+    "descricao": "Dataset expandido cobrindo as 10 aulas do plano de ensino do CETAM/IBC, incluindo conteúdos específicos de cada aula, tópicos aprofundados e frases reais observadas nos logs de conversação.",
+    "exemplos_perguntas": [
+      "Qual é o nome do professor?",
+      "Como calcula a média das avaliações AV1 e AV2?",
+      "O que é TF-IDF?",
+      "Qual a diferença entre Stemming e Lematização?",
+      "Por que não podemos remover a palavra não nas stopwords?"
+    ],
+    "respostas_fallback": [
+      "Desculpe, não consegui entender com clareza a sua dúvida sobre PLN. Você poderia reformular a pergunta ou tentar com outras palavras? Se quiser ver os tópicos que domino, digite /ajuda.",
+      "Ainda estou aprendendo e minha certeza para essa pergunta foi baixa. Tente perguntar sobre critérios de notas, o plano de aula, ou conceitos como Tokenização, TF-IDF, Naive Bayes e Regressão Logística. Você também pode usar o comando /ajuda.",
+      "Hum, não tenho certeza se compreendi o que você precisa. Tente simplificar a frase ou verifique a ortografia. Essa sua pergunta foi registrada e poderá me ajudar a aprender no futuro!"
+    ]
   },
   "intents": [
     {

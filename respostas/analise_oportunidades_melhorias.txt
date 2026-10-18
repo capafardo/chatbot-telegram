@@ -265,3 +265,153 @@ Prioridade Baixa (Refinamento e Limpeza):
      apenas JSONL como fonte da verdade e exportar CSV sob demanda).
   7. Limpar arquivos `.pyc` antigos das pastas `__pycache__`.
 ================================================================================
+
+
+================================================================================
+9. REGISTRO DAS MELHORIAS IMPLEMENTADAS NO PROJETO (PÓS-COMMIT c45e9c7)
+--------------------------------------------------------------------------------
+Após garantir o commit do estado anterior (`c45e9c7`), todas as melhorias
+identificadas na análise e alinhadas com o professor foram implementadas:
+
+1. Padronização Integral em Português Brasileiro:
+   - Todas as classes, métodos, atributos e variáveis internas foram traduzidos
+     para português: `PipelinePLN`, `MotorML`, `ResultadoPredicao`,
+     `AvaliadorModelo`, `RegistradorPrivacidade`, `AutoAperfeicoamento`,
+     `ControladorBot`, `RespostaBot`, `AdaptadorTelegram` e `AdaptadorCLI`.
+   - Limpeza de todos os arquivos `.pyc` órfãos em `src/__pycache__` e
+     `tests/__pycache__`.
+
+2. Modularidade "White-Label" (Reuso para Outro Nome e Outro Assunto):
+   - O arquivo `data/intencoes.json` agora centraliza no bloco `"metadata"` os
+     campos `nome_bot`, `nome_curto`, `dominio_assunto`, `exemplos_perguntas` e
+     `respostas_fallback`.
+   - O `ControladorBot`, o `MotorML` e o `AdaptadorCLI` constroem dinamicamente
+     as respostas de `/start`, `/ajuda`, o cabeçalho do terminal e os fallbacks
+     a partir do JSON (e suportam a variável `DATASET_PATH` no `.env`).
+
+3. Refinamentos Didáticos no Pipeline de PLN (`src/pipeline_pln.py`):
+   - Proteção das palavras `"por"` e `"que"` em `PALAVRAS_PROTEGIDAS`, evitando
+     que a expansão da gíria `"pq"` -> `"por que"` perdesse o termo interrogativo.
+   - Normalização de acentos na saída de `processar()`, garantindo que palavras
+     digitadas com ou sem acento (`"avaliacao"` vs `"avaliação"`) tenham a mesma
+     representação no `TfidfVectorizer`.
+   - Adição da configuração `USE_STEMMING=false` no `.env` e exibição explícita
+     no `/debug` informando se o Stemming está ativo na vetorização ou apenas em
+     modo demonstrativo, além de exibir o `8️⃣ Texto Final (Vetorizador)`.
+
+4. Segurança e Privacidade LGPD (`src/registrador_privacidade.py`):
+   - Correção da `REGEX_NOME_DECLARADO`: uso de grupo `(?i:...)` apenas no
+     gatilho (`meu nome é`, `me chamo`, `sou o/a`), exigindo letra inicial
+     maiúscula para o nome próprio e impedindo que frases comuns em minúsculas
+     (como `"sou o aluno que faltou ontem"`) fossem apagadas.
+   - Sincronização automática entre `logs/conversas.jsonl` e `logs/conversas.csv`
+     quando uma interação é marcada como revisada no `/regenerar`.
+   - Substituição de blocos `except Exception: pass` silenciosos por avisos via
+     `logger.warning`.
+
+5. Robustez e Validação Cruzada (`src/avaliador.py`):
+   - Uso de `sklearn.pipeline.Pipeline` com `clone()` na validação cruzada
+     (`StratifiedKFold`), eliminando vazamento de dados (Data Leakage) e
+     evitando mutar o vetorizador principal em memória.
+   - Proteção para intenções recém-criadas via `/regenerar` que possuam apenas
+     1 frase de exemplo, evitando erro `ValueError` no `StratifiedKFold`.
+   - Cache em memória das métricas de validação cruzada vinculado à versão de
+     treino do modelo (`versao_treino`), mantendo `/metricas` aberto aos alunos
+     sem risco de sobrecarga de CPU.
+
+6. Integração com o Telegram (`src/adaptador_telegram.py`):
+   - Conversão segura de marcações Markdown (`**negrito**`, `*itálico*`,
+     `` `código` ``) para HTML (`<b>`, `<i>`, `<code>` após `html.escape`) com
+     `parse_mode="HTML"`, eliminando asteriscos crus na tela e evitando falhas
+     com underscores (`_`) nas tags de intenção.
+   - Divisão automática de mensagens longas respeitando o limite de 4096
+     caracteres da API do Telegram.
+   - Registro automático do menu nativo de comandos (`BotCommand`) na
+     inicialização do bot.
+================================================================================
+
+
+================================================================================
+10. PERGUNTA: O CÓDIGO USA MACHINE LEARNING PARA RESPONDER AO USUÁRIO?
+--------------------------------------------------------------------------------
+Resposta Curta:
+NÃO. O código usa Machine Learning apenas para CLASSIFICAR A INTENÇÃO da
+pergunta (entender o que o usuário quer). A geração/entrega da resposta é
+baseada em RECUPERAÇÃO DE TEMPLATES (sorteio entre respostas pré-cadastradas no
+arquivo `data/intencoes.json`).
+
+Explicação Detalhada (Arquitetura Retrieval/Template-based vs. Generativa):
+1. Onde entra o Machine Learning (`src/motor_ml.py` - linhas 176 a 204):
+   - O texto do usuário passa pelo `PipelinePLN` e pelo `TfidfVectorizer`.
+   - O classificador (`LogisticRegression` ou `MultinomialNB`) calcula a
+     probabilidade da pergunta pertencer a cada uma das 43 categorias (`tags`)
+     do arquivo `data/intencoes.json`.
+   - Exemplo: se o aluno pergunta "O que é TF-IDF?", o modelo de ML prediz a tag
+     `representacao_tfidf_embeddings` com ~92% de confiança.
+
+2. Como a resposta é escolhida (`src/motor_ml.py` - linhas 220 a 226):
+   - Uma vez descoberta a `intencao_primaria` (ou acionado o `fallback` se a
+     certeza for menor que `0.35`), o código faz uma busca direta em dicionário
+     e sorteia uma das frases prontas cadastradas na lista `"responses"` daquela
+     intenção usando `random.choice(respostas_possiveis)`.
+   - Ou seja, o bot NÃO inventa palavras novas palavra por palavra (como faria
+     um LLM / modelo generativo).
+
+3. Por que essa abordagem é a ideal para este projeto educacional?
+   - Zero risco de alucinação: como é um tutor de disciplina técnica, todas as
+     respostas foram revisadas pelo professor no `intencoes.json` (fórmulas de
+     notas AV1/AV2, datas e conceitos de PLN são 100% precisos).
+   - Leveza e rapidez: roda em milissegundos na CPU de qualquer computador de
+     laboratório sem precisar de placa de vídeo (GPU) ou APIs pagas.
+   - Se desejado futuramente sem usar LLMs, é possível ir além do `random.choice`
+     usando Similaridade de Cosseno (TF-IDF) para escolher, dentre as respostas
+     ou sub-perguntas daquela intenção, aquela mais próxima dos termos exatos
+     usados pelo aluno.
+================================================================================
+
+
+================================================================================
+11. PERGUNTA: A SIMILARIDADE DO COSSENO PARA ESCOLHER A RESPOSTA ESTÁ PREVISTA
+    NO PLANO DE AULA? O QUE EXATAMENTE ESTÁ PREVISTO NESTE QUESITO?
+--------------------------------------------------------------------------------
+1. Sobre a Similaridade do Cosseno para escolha de resposta:
+   - NÃO está prevista como requisito de implementação para seleção de respostas.
+   - No material da disciplina (`aula04.pdf`, página 10), a "similaridade
+     cosseno" é citada apenas de forma conceitual na comparação teórica entre
+     TF-IDF e Embeddings Vetoriais.
+
+2. O que está EXATAMENTE previsto no Plano de Ensino (`plano-de-aula.pdf`) e nos
+   slides da Aula 07 (`aula07.pdf`) para a entrega da resposta:
+   - No `plano-de-aula.pdf` (Aula 07, página 11, Momentos 1 e 2):
+     * Objetos de conhecimento: "Chatbots baseados em regras. Regex.
+       Dicionários. Fluxos. Fallback. Logs. Chatbots com ML. Intents. Dataset
+       de exemplos. Pipeline entrada-intenção-resposta-ação."
+     * Momento 2: "Construção guiada da lógica conversacional: criação de menus
+       estruturados, botões/opções de navegação e DICIONÁRIOS COM AS RESPOSTAS
+       QUE O ROBÔ DEVE ENVIAR PARA CADA INTENÇÃO."
+   - No `plano-de-aula.pdf` (Projeto Integrador, página 17):
+     * Fase 1 (Aulas 01 a 03): "Construção de assistente conversacional
+       estruturado baseado em regras, expressões regulares (re) e dicionários
+       de respostas, com mensagens de saudação, menus e tratamento básico de
+       fallback."
+     * Fase 2 (Aulas 04 a 10): "Evolução do assistente com motor de Machine
+       Learning para classificação supervisionada de intenções do usuário
+       (usando vetorização TF-IDF e classificadores Naive Bayes / Regressão
+       Logística)..."
+   - Nos slides da Aula 07 (`ignorar/aula07.pdf`, páginas 5 e 7):
+     * Mapeamento Chave-Valor: Um dicionário Python (`RESPOSTAS = {}`) que
+       vincula a tag da intenção predita pelo modelo de ML à resposta
+       correspondente (`RESPOSTAS.get(intencao, RESPOSTAS['fallback'])`).
+     * Variação de Respostas (`Random Choice`): "Armazene listas de respostas
+       sinônimas para a mesma intenção, evitando que o bot pareça um gravador
+       mecânico."
+     * Corte por Limiar de Confiança (`threshold`): Se `confianca < threshold`,
+       retorna a resposta de `fallback`.
+
+Conclusão:
+O código atual do projeto (`src/motor_ml.py` e `src/controlador_bot.py`) segue
+EXATAMENTE 100% do que está previsto no Plano de Ensino e na Aula 07:
+classificação probabilística de intenção com ML (TF-IDF + Regressão Logística /
+Naive Bayes), verificação de limiar de Fallback e seleção da resposta via
+dicionário de intenções com `random.choice` entre respostas sinônimas.
+================================================================================

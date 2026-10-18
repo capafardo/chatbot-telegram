@@ -1,29 +1,32 @@
-"""Testes unitários para o motor de Machine Learning e Fallback."""
+"""Testes unitários para o MotorML e mecanismo de Fallback."""
 
-from src.motor_ml import MLEngine
-
-
-def test_model_training_and_intent_recognition():
-    engine = MLEngine()
-    assert engine.is_trained
-    assert len(engine.training_sentences) > 0
-
-    res = engine.predict("Quem é o professor da matéria?")
-    assert res.intent == "professor_info"
-    assert not res.is_fallback
-    assert "Agnaldo Marcelo Pereira Fournier" in res.response
+from src.motor_ml import MotorML
 
 
-def test_technical_question_recognition():
-    engine = MLEngine()
-    res = engine.predict("O que é TF-IDF?")
-    assert res.intent == "representacao_tfidf_embeddings"
-    assert not res.is_fallback
-    assert res.confidence >= 0.35
+def test_treinamento_modelo_e_reconhecimento_intencao():
+    motor = MotorML()
+    assert motor.esta_treinado
+    assert len(motor.frases_treinamento) > 0
+
+    resultado = motor.prever("Quem é o professor da matéria?")
+    assert resultado.intencao == "professor_info"
+    assert not resultado.acionou_fallback
+    assert "Agnaldo Marcelo Pereira Fournier" in resultado.resposta
 
 
-def test_fallback_on_unrelated_text():
-    engine = MLEngine()
-    res = engine.predict("qual a temperatura do sol hoje de tarde?")
-    assert res.is_fallback
-    assert res.intent == "fallback"
+def test_reconhecimento_pergunta_tecnica_com_e_sem_acento():
+    motor = MotorML()
+    res1 = motor.prever("O que é TF-IDF?")
+    assert res1.intencao == "representacao_tfidf_embeddings"
+    assert not res1.acionou_fallback
+    assert res1.confianca >= 0.35
+
+    res2 = motor.prever("como funciona a regressao logistica sem acento?")
+    assert not res2.acionou_fallback
+
+
+def test_fallback_em_texto_fora_de_escopo():
+    motor = MotorML()
+    resultado = motor.prever("qual a temperatura do sol hoje de tarde?")
+    assert resultado.acionou_fallback
+    assert resultado.intencao == "fallback"

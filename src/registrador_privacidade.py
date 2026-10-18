@@ -12,13 +12,21 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import logging
 import re
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
-from src.configuracao import LOG_CSV_FILE, LOG_JSONL_FILE, LOGS_DIR, SALT_ANONYMIZATION
+from src.configuracao import (
+    ARQUIVO_LOG_CSV,
+    ARQUIVO_LOG_JSONL,
+    DIRETORIO_LOGS,
+    SAL_ANONIMIZACAO,
+)
+
+logger = logging.getLogger(__name__)
 
 # ==============================================================================
 # PADRÕES DE EXPRESSÕES REGULARES PARA DADOS SENSÍVEIS (PII)
@@ -30,165 +38,209 @@ REGEX_CPF = re.compile(r"\b\d{3}\.?\d{3}\.?\d{3}[-.]?\d{2}\b")
 REGEX_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 
 # Padrão de Telefone celular / fixo no Brasil (com ou sem DDD e traços)
-REGEX_PHONE = re.compile(r"\b(?:\+?55\s?)?(?:\(?\d{2}\)?[\s-]?)?(?:9\s?\d{4}|\d{4})[-\s]?\d{4}\b")
+REGEX_TELEFONE = re.compile(
+    r"\b(?:\+?55\s?)?(?:\(?\d{2}\)?[\s-]?)?(?:9\s?\d{4}|\d{4})[-\s]?\d{4}\b"
+)
 
 # Padrão de Matrícula estudantil ou RA
 REGEX_MATRICULA = re.compile(r"\b(?:matr[ií]cula|ra|id)\s*[:=]?\s*\d{4,}\b", re.IGNORECASE)
 
-# Padrão de declaração de nomes próprios em português
+# Padrão de declaração de nomes próprios em português:
+# Nota de Segurança: O gatilho ('meu nome é', 'me chamo', 'sou o/a') é insensível a maiúsculas
+# via (?i:...), mas o nome próprio capturado exige letra inicial maiúscula ([A-ZÁÉÍÓÚ...]),
+# evitando que frases como "sou o aluno que faltou ontem" tenham seu conteúdo apagado!
 REGEX_NOME_DECLARADO = re.compile(
-    r"\b(meu nome [ée]|me chamo|sou [oa])\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+)*)\b",
-    re.IGNORECASE
+    r"\b((?i:meu nome [ée]|me chamo|sou [oa]))\s+"
+    r"([A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+(?:\s+(?:(?:da|de|do|das|dos)\s+)?[A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-záéíóúâêôãõç]+)*)\b"
 )
 
+CABECALHOS_CSV: List[str] = [
+    "id_interacao",
+    "data",
+    "hora",
+    "canal",
+    "usuario_anonimizado",
+    "mensagem_anonimizada",
+    "intencao_identificada",
+    "probabilidade_confianca",
+    "fallback_acionado",
+    "revisado_aprendizado",
+]
 
-class PrivacyLogger:
+
+class RegistradorPrivacidade:
     """Gerenciador de logs auditáveis e anonimizados de conversas."""
 
     def __init__(
         self,
-        jsonl_path: Path | None = None,
-        csv_path: Path | None = None,
-        salt: str = SALT_ANONYMIZATION
+        caminho_jsonl: Path | None = None,
+        caminho_csv: Path | None = None,
+        sal: str = SAL_ANONIMIZACAO
     ) -> None:
-        self.jsonl_path: Path = jsonl_path or LOG_JSONL_FILE
-        self.csv_path: Path = csv_path or LOG_CSV_FILE
-        self.salt: str = salt
+        self.caminho_jsonl: Path = caminho_jsonl or ARQUIVO_LOG_JSONL
+        self.caminho_csv: Path = caminho_csv or ARQUIVO_LOG_CSV
+        self.sal: str = sal
 
-        LOGS_DIR.mkdir(parents=True, exist_ok=True)
-        self._ensure_csv_header()
+        DIRETORIO_LOGS.mkdir(parents=True, exist_ok=True)
+        self._garantir_cabecalho_csv()
 
-    def _ensure_csv_header(self) -> None:
+    def _garantir_cabecalho_csv(self) -> None:
         """Garante a criação do cabeçalho caso o arquivo CSV não exista."""
-        if not self.csv_path.exists():
-            headers = [
-                "id_interacao",
-                "data",
-                "hora",
-                "canal",
-                "usuario_anonimizado",
-                "mensagem_anonimizada",
-                "intencao_identificada",
-                "probabilidade_confianca",
-                "fallback_acionado",
-                "revisado_aprendizado"
-            ]
+        if not self.caminho_csv.exists():
             try:
-                with open(self.csv_path, mode="w", encoding="utf-8", newline="") as f:
-                    writer = csv.writer(f)
-                    writer.writerow(headers)
-            except Exception:
-                pass
+                self.caminho_csv.parent.mkdir(parents=True, exist_ok=True)
+                with open(self.caminho_csv, mode="w", encoding="utf-8", newline="") as f:
+                    escritor = csv.writer(f)
+                    escritor.writerow(CABECALHOS_CSV)
+            except Exception as erro:
+                logger.warning(f"Aviso: Falha ao criar cabeçalho CSV em '{self.caminho_csv}': {erro}")
 
-    def anonymize_user_id(self, raw_user_id: int | str) -> str:
-        """Gera um identificador pseudo-anônimo determinístico com hash SHA-256 e Salt.
+    def anonimizar_id_usuario(self, id_usuario_bruto: int | str) -> str:
+        """Gera um identificador pseudo-anônimo determinístico com hash SHA-256 e Sal.
 
         Permite correlacionar mensagens da mesma sessão sem jamais revelar o ID real do Telegram.
         """
-        combined = f"{self.salt}_{raw_user_id}".encode("utf-8")
-        hash_digest = hashlib.sha256(combined).hexdigest()
-        return f"usr_{hash_digest[:16]}"
+        combinado = f"{self.sal}_{id_usuario_bruto}".encode("utf-8")
+        resumo_hash = hashlib.sha256(combinado).hexdigest()
+        return f"usr_{resumo_hash[:16]}"
 
-    def sanitize_message(self, message: str) -> str:
+    def sanitizar_mensagem(self, mensagem: str) -> str:
         """Substitui dados pessoais identificáveis por marcadores genéricos de privacidade."""
-        sanitized = message
+        sanitizada = mensagem
 
         # 1. Oculta CPF
-        sanitized = REGEX_CPF.sub("[CPF_OCULTO]", sanitized)
+        sanitizada = REGEX_CPF.sub("[CPF_OCULTO]", sanitizada)
 
         # 2. Oculta E-mails
-        sanitized = REGEX_EMAIL.sub("[EMAIL_OCULTO]", sanitized)
+        sanitizada = REGEX_EMAIL.sub("[EMAIL_OCULTO]", sanitizada)
 
         # 3. Oculta Telefones
-        sanitized = REGEX_PHONE.sub("[TELEFONE_OCULTO]", sanitized)
+        sanitizada = REGEX_TELEFONE.sub("[TELEFONE_OCULTO]", sanitizada)
 
         # 4. Oculta Matrícula estudantil
-        sanitized = REGEX_MATRICULA.sub("[MATRICULA_OCULTA]", sanitized)
+        sanitizada = REGEX_MATRICULA.sub("[MATRICULA_OCULTA]", sanitizada)
 
-        # 5. Oculta nomes próprios após apresentações
-        sanitized = REGEX_NOME_DECLARADO.sub(r"\1 [NOME_OCULTO]", sanitized)
+        # 5. Oculta nomes próprios capitalizados após apresentações
+        sanitizada = REGEX_NOME_DECLARADO.sub(r"\1 [NOME_OCULTO]", sanitizada)
 
-        return sanitized
+        return sanitizada
 
-    def log_interaction(
+    def registrar_interacao(
         self,
-        raw_user_id: int | str,
-        raw_message: str,
-        predicted_intent: str,
-        confidence: float,
-        is_fallback: bool,
-        channel: str = "telegram"
+        id_usuario_bruto: int | str,
+        mensagem_bruta: str,
+        intencao_predita: str,
+        confianca: float,
+        acionou_fallback: bool,
+        canal: str = "telegram"
     ) -> Dict[str, Any]:
         """Anonimiza e persiste o registro da interação em formato JSONL e CSV."""
-        now = datetime.now()
-        record_id = str(uuid.uuid4())
-        user_anon = self.anonymize_user_id(raw_user_id)
-        msg_anon = self.sanitize_message(raw_message)
+        agora = datetime.now()
+        id_registro = str(uuid.uuid4())
+        usuario_anonimo = self.anonimizar_id_usuario(id_usuario_bruto)
+        mensagem_anonima = self.sanitizar_mensagem(mensagem_bruta)
 
-        log_entry: Dict[str, Any] = {
-            "id_interacao": record_id,
-            "data": now.strftime("%Y-%m-%d"),
-            "hora": now.strftime("%H:%M:%S"),
-            "canal": channel,
-            "usuario_anonimizado": user_anon,
-            "mensagem_anonimizada": msg_anon,
-            "intencao_identificada": predicted_intent,
-            "probabilidade_confianca": round(confidence, 4),
-            "fallback_acionado": is_fallback,
+        entrada_log: Dict[str, Any] = {
+            "id_interacao": id_registro,
+            "data": agora.strftime("%Y-%m-%d"),
+            "hora": agora.strftime("%H:%M:%S"),
+            "canal": canal,
+            "usuario_anonimizado": usuario_anonimo,
+            "mensagem_anonimizada": mensagem_anonima,
+            "intencao_identificada": intencao_predita,
+            "probabilidade_confianca": round(confianca, 4),
+            "fallback_acionado": acionou_fallback,
             "revisado_aprendizado": False
         }
 
         # 1. Gravação no formato JSONL (Acréscimo atômico linha por linha)
         try:
-            with open(self.jsonl_path, mode="a", encoding="utf-8") as f_json:
-                f_json.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
+            with open(self.caminho_jsonl, mode="a", encoding="utf-8") as f_json:
+                f_json.write(json.dumps(entrada_log, ensure_ascii=False) + "\n")
                 f_json.flush()
-        except Exception:
-            pass
+        except Exception as erro:
+            logger.warning(f"Aviso: Falha ao gravar log JSONL em '{self.caminho_jsonl}': {erro}")
 
         # 2. Gravação no formato CSV
         try:
-            with open(self.csv_path, mode="a", encoding="utf-8", newline="") as f_csv:
-                writer = csv.writer(f_csv)
-                writer.writerow([
-                    log_entry["id_interacao"],
-                    log_entry["data"],
-                    log_entry["hora"],
-                    log_entry["canal"],
-                    log_entry["usuario_anonimizado"],
-                    log_entry["mensagem_anonimizada"],
-                    log_entry["intencao_identificada"],
-                    log_entry["probabilidade_confianca"],
-                    log_entry["fallback_acionado"],
-                    log_entry["revisado_aprendizado"]
-                ])
+            self._garantir_cabecalho_csv()
+            with open(self.caminho_csv, mode="a", encoding="utf-8", newline="") as f_csv:
+                escritor = csv.writer(f_csv)
+                escritor.writerow([entrada_log[col] for col in CABECALHOS_CSV])
                 f_csv.flush()
-        except Exception:
-            pass
+        except Exception as erro:
+            logger.warning(f"Aviso: Falha ao gravar log CSV em '{self.caminho_csv}': {erro}")
 
-        return log_entry
+        return entrada_log
 
-    def read_all_logs(self) -> List[Dict[str, Any]]:
-        """Lê todos os registros de log armazenados."""
-        records: List[Dict[str, Any]] = []
-        if not self.jsonl_path.exists():
-            return records
+    def ler_todos_logs(self) -> List[Dict[str, Any]]:
+        """Lê todos os registros de log armazenados no arquivo JSONL."""
+        registros: List[Dict[str, Any]] = []
+        if not self.caminho_jsonl.exists():
+            return registros
 
-        with open(self.jsonl_path, mode="r", encoding="utf-8") as f:
-            for line in f:
-                line_str = line.strip()
-                if line_str:
+        try:
+            with open(self.caminho_jsonl, mode="r", encoding="utf-8") as f:
+                for linha in f:
+                    linha_limpa = linha.strip()
+                    if linha_limpa:
+                        try:
+                            registros.append(json.loads(linha_limpa))
+                        except json.JSONDecodeError:
+                            continue
+        except Exception as erro:
+            logger.warning(f"Aviso: Falha ao ler logs em '{self.caminho_jsonl}': {erro}")
+
+        return registros
+
+    def marcar_interacao_revisada(self, id_interacao: str) -> bool:
+        """Marca uma interação como revisada tanto no arquivo JSONL quanto no CSV."""
+        if not self.caminho_jsonl.exists():
+            return False
+
+        logs_atualizados: List[Dict[str, Any]] = []
+        encontrado = False
+
+        try:
+            with open(self.caminho_jsonl, mode="r", encoding="utf-8") as f:
+                for linha in f:
+                    linha_limpa = linha.strip()
+                    if not linha_limpa:
+                        continue
                     try:
-                        records.append(json.loads(line_str))
+                        dados = json.loads(linha_limpa)
+                        if dados.get("id_interacao") == id_interacao:
+                            dados["revisado_aprendizado"] = True
+                            encontrado = True
+                        logs_atualizados.append(dados)
                     except json.JSONDecodeError:
                         continue
-        return records
 
-    def get_metrics_summary(self) -> Dict[str, Any]:
+            if encontrado:
+                # 1. Atualiza JSONL
+                with open(self.caminho_jsonl, mode="w", encoding="utf-8") as f_json:
+                    for item in logs_atualizados:
+                        f_json.write(json.dumps(item, ensure_ascii=False) + "\n")
+                    f_json.flush()
+
+                # 2. Sincroniza CSV com os mesmos registros atualizados
+                with open(self.caminho_csv, mode="w", encoding="utf-8", newline="") as f_csv:
+                    escritor = csv.writer(f_csv)
+                    escritor.writerow(CABECALHOS_CSV)
+                    for item in logs_atualizados:
+                        escritor.writerow([item.get(col, "") for col in CABECALHOS_CSV])
+                    f_csv.flush()
+        except Exception as erro:
+            logger.warning(f"Aviso: Falha ao atualizar status de revisão do log '{id_interacao}': {erro}")
+            return False
+
+        return encontrado
+
+    def obter_resumo_metricas(self) -> Dict[str, Any]:
         """Calcula métricas operacionais a partir do histórico de conversas."""
-        logs = self.read_all_logs()
-        total_interactions = len(logs)
-        if total_interactions == 0:
+        logs = self.ler_todos_logs()
+        total_interacoes = len(logs)
+        if total_interacoes == 0:
             return {
                 "total_interacoes": 0,
                 "total_resolvidas": 0,
@@ -201,27 +253,27 @@ class PrivacyLogger:
             }
 
         fallbacks = sum(1 for item in logs if item.get("fallback_acionado", False))
-        resolved = total_interactions - fallbacks
-        confidences = [item.get("probabilidade_confianca", 0.0) for item in logs]
-        unique_users = len({item.get("usuario_anonimizado", "") for item in logs})
+        resolvidas = total_interacoes - fallbacks
+        confiancas = [float(item.get("probabilidade_confianca", 0.0)) for item in logs]
+        usuarios_unicos = len({item.get("usuario_anonimizado", "") for item in logs})
 
         # Contagem de intenções
-        intent_counts: Dict[str, int] = {}
+        contagem_intencoes: Dict[str, int] = {}
         for item in logs:
             if not item.get("fallback_acionado", False):
-                intent = item.get("intencao_identificada", "")
-                if intent:
-                    intent_counts[intent] = intent_counts.get(intent, 0) + 1
+                intencao = item.get("intencao_identificada", "")
+                if intencao:
+                    contagem_intencoes[intencao] = contagem_intencoes.get(intencao, 0) + 1
 
-        top_intents = sorted(intent_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+        top_intencoes = sorted(contagem_intencoes.items(), key=lambda x: x[1], reverse=True)[:5]
 
         return {
-            "total_interacoes": total_interactions,
-            "total_resolvidas": resolved,
+            "total_interacoes": total_interacoes,
+            "total_resolvidas": resolvidas,
             "total_fallback": fallbacks,
-            "taxa_resolucao": round((resolved / total_interactions) * 100, 2),
-            "taxa_fallback": round((fallbacks / total_interactions) * 100, 2),
-            "confianca_media": round(float(sum(confidences) / total_interactions), 3),
-            "usuarios_unicos": unique_users,
-            "top_intencoes": top_intents
+            "taxa_resolucao": round((resolvidas / total_interacoes) * 100, 2),
+            "taxa_fallback": round((fallbacks / total_interacoes) * 100, 2),
+            "confianca_media": round(float(sum(confiancas) / total_interacoes), 3),
+            "usuarios_unicos": usuarios_unicos,
+            "top_intencoes": top_intencoes
         }
