@@ -7,16 +7,7 @@ Prof. Agnaldo Marcelo Fournier
 Exemplo de chatbot tutor pln com integração ao Telegram
 =======================================================
 
-# Chatbot Tutor de PLN & Chatbots
-
-> **Assistente Virtual Educacional em Processamento de Linguagem Natural**  
-> **Instituição:** CETAM — Centro de Educação Tecnológica do Amazonas  
-> **Unidade:** Escola IBC — Instituto Benjamin Constant (Manaus/AM)  
-> **Curso:** Técnico de Nível Médio em Inteligência Artificial (Eixo: Informação e Comunicação)  
-> **Componente Curricular:** Processamento de Linguagem Natural (PLN) Chatbots (40H)  
-> **Docente:** Prof. Agnaldo Marcelo Pereira Fournier  
-
----
+# Exemplo de Chatbot python integrado ao Telegram
 
 ## 📖 Visão Geral
 

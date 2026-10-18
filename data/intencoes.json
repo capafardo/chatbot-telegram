@@ -21,6 +21,7 @@
       "descricao": "Cumprimentos e início de conversa",
       "patterns": [
         "Olá",
+        "ola",
         "Oi",
         "Oi, tudo bem?",
         "Bom dia",
@@ -252,7 +253,7 @@
         "Quais são as etapas de um pipeline de linguagem?",
         "Como funciona o fluxo de processamento de texto?",
         "Quais os passos para processar uma frase?",
-        "O que acontece com a mensagem antes do robô responder?"
+        "O que acontece com a mensagem antes do chatbot responder?"
       ],
       "responses": [
         "Um pipeline de PLN é uma esteira de passos organizados: 1) Entrada do texto bruto digitado pelo usuário; 2) Pré-processamento (letras minúsculas, limpeza de gírias, pontuações e stopwords); 3) Representação numérica (vetorização como TF-IDF); 4) Classificação pelo algoritmo de Machine Learning; 5) Seleção da resposta adequada ou acionamento do Fallback caso a certeza seja baixa."
