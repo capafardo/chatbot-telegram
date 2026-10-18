@@ -2,6 +2,7 @@
 descricao.txt
 CONTEND.md
 ignorar/
+respostas/
 
 # Variáveis de ambiente e segredos
 .env

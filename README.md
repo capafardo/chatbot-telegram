@@ -185,7 +185,6 @@ chatbot-telegram/
 │   └── backups/                 # Cópias de segurança criadas antes de retreinos
 ├── logs/
 │   └── .gitkeep                 # Armazena conversas anonimizadas (conversas.jsonl/.csv)
-├── respostas/                   # Relatórios de análise arquitetural e melhorias
 ├── src/
 │   ├── configuracao.py              # Leitura do .env e compatibilidade Windows/Linux
 │   ├── pipeline_pln.py              # PipelinePLN: pré-processamento, gírias, stopwords e /debug
